@@ -21,8 +21,11 @@ int main (){
             break;
         }
     }
-    for (i=0; i<n; i++){
-        if (a[i]==0) k2=i;
+    for (i=n-1; i>=0; i--){
+        if (a[i]==0){
+            k2=i;
+            break;
+        }
     }
     if (k1!=k2){
         for (i=k1+1; i<k2; i++)
