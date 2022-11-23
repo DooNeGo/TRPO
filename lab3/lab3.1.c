@@ -14,8 +14,7 @@ int main(){
     scanf("%lf", &xk);
     printf("Enter dx: ");
     scanf("%lf", &dx);
-    if (xn==c || xk==c || xn==xk) 
-        printf ("input ERROR\n");
+    if (xn==xk) printf ("input ERROR\n");
     printf ("|   x   |   F   |\n");
     for (x=xn; x<=xk; x+=dx){
         if ((a<0) && (b!=0)) 
