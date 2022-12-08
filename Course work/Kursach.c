@@ -35,14 +35,14 @@ void pass(int *k){
         printf("Password: ");
         scanf("%s", &password);
         for (int i=0; i<size; i++){
-            if ((login==a1[i].login) && (password==a1[i].password)){
+            if (strcpy(a1[i].login, login)!=0 && strcpy(a1[i].password, password)!=0){
                 if (a1[i].role==1){
                     *k=1;
-                    printf("Enter succesful!");
+                    printf("Enter succesful!\n");
                     break;
                 }
                 else *k=2;
-                printf("Enter succesful!");
+                printf("Enter succesful!\n");
                 break;
             }
         }
