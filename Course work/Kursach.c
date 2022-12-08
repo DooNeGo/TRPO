@@ -27,10 +27,6 @@ void pass(int *k){
         scanf("%s", &login);
         printf("Password: ");
         scanf("%s", &password);
-        if ((a1[0].login==login) && (a1[0].password==password)){
-            *k=1;
-            printf("Enter succesful!");
-        }
         for (int i=0; i<2; i++){
             if ((a1[i].login==login) && (a1[i].password==password)){
                 if (i==0){
