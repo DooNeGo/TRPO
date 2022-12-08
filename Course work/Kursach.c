@@ -17,12 +17,11 @@ struct users{
 }a1[2];
 // Вход
 void pass(int *k){
-    int n;
-    bool stop;
+    int n, stop;
     char login[15], password[15];
     struct users a1[]={"admin", "admin", 1, "user", "user", 0};
     while (*k==0){
-        stop=false;
+        stop=0;
         printf("Login: ");
         scanf("%s", &login);
         printf("Password: ");
@@ -31,19 +30,21 @@ void pass(int *k){
             if ((a1[i].login==login) && (a1[i].password==password)){
                 if (i==0){
                     *k=1;
+                    printf("Enter succesful!");
                     break;
                 }
                 else *k=2;
                 printf("Enter succesful!");
+                break;
             }
         }
         if (*k==0) printf("\nWrong login or password\n");
-        while ((*k==0) && !stop){
+        while ((*k==0) && stop!=1){
             printf("1 - Try logging in again\n2 - Exit\n");
             scanf("%d", &n);
             switch (n){
                 case 1:
-                    stop=true;
+                    stop=1;
                     break;
                 case 2:
                     *k=-1;
