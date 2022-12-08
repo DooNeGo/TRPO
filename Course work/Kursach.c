@@ -41,8 +41,9 @@ void pass(int *k){
                 printf("Enter succesful!");
             }
         }
+        if (*k==0) printf("\nWrong login or password\n");
         while ((*k==0) && !stop){
-            printf("Wrong login or password\n1 - Try again\n2 - Exit\n");
+            printf("1 - Try logging in again\n2 - Exit\n");
             scanf("%d", &n);
             switch (n){
                 case 1:
@@ -52,7 +53,7 @@ void pass(int *k){
                     *k=-1;
                     break;
                 default:
-                    printf("Wrong number");
+                    printf("\nWrong number, please try again\n");
             }
         }
     }
