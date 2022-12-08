@@ -22,20 +22,21 @@ void array_nulling(char *array, int size){
 }
 // Вход
 void pass(int *k){
-    int n, stop;
+    int n, stop, size;
     char login[15], password[15];
     users a1[]={"admin", "admin", 1, "user", "user", 0};
     array_nulling(login, 15);
     array_nulling(password, 15);
+    size=sizeof(a1)/sizeof(a1[0]);
     while (*k==0){
         stop=0;
         printf("Login: ");
         scanf("%s", &login);
         printf("Password: ");
         scanf("%s", &password);
-        for (int i=0; i<2; i++){
-            if ((a1[i].login==login) && (a1[i].password==password)){
-                if (i==0){
+        for (int i=0; i<size; i++){
+            if ((login==a1[i].login) && (password==a1[i].password)){
+                if (a1[i].role==1){
                     *k=1;
                     printf("Enter succesful!");
                     break;
