@@ -1,25 +1,32 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-struct hospitalEmployee{
+typedef struct{
     char FIO[50];
     int year;
     int month;
     int numberofDays;
     int daysMissedDuetoIllness;
     float paymentinOneDay;                                                                                                                                                        
-}a[100];
+}hospitalEmployee;
 
-struct users{
+typedef struct{
     char login[15];
     char password[15];
     int role;
-}a1[2];
+}users;
+void array_nulling(char *array, int size){
+    for (int i=0; i<size; i++){
+        *(array+i)=0;
+    }
+}
 // Вход
 void pass(int *k){
     int n, stop;
     char login[15], password[15];
-    struct users a1[]={"admin", "admin", 1, "user", "user", 0};
+    users a1[]={"admin", "admin", 1, "user", "user", 0};
+    array_nulling(login, 15);
+    array_nulling(password, 15);
     while (*k==0){
         stop=0;
         printf("Login: ");
