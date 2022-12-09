@@ -62,11 +62,11 @@ void pass(int *k, struct users *a1, int *size){
 }
 void outputInformationAboutHospitalEmployees(struct hospitalEmployee *a, int *size){
     for (int i=0; i<*size; i++){
-        printf("| FIO: %2s | Year: %2d | Month: %2d | Number of days: %2d |\n", (a+i)->FIO, (a+i)->year, (a+i)->month, (a+i)->numberofDays, (a+i)->paymentinOneDay);
+        printf("|FIO: %2s | Year: %2d | Month: %2d | Number of days: %2d | Payment in one day: %2f|\n", (a+i)->FIO, (a+i)->year, (a+i)->month, (a+i)->numberofDays, (a+i)->paymentinOneDay);
     }
 }
 int main(){
-    int k=0, size1, n, size2, i;
+    int k=0, size1, n, size2, m=0;
     struct users a1[]={"admin", "admin", 1, "user", "user", 0};
     size1=sizeof(a1)/sizeof(a1[0]);
     struct hospitalEmployee a[]={"Kostroma Matvey Olegovich", 1, 11, 5, 8.54};
@@ -74,15 +74,21 @@ int main(){
     pass(&k, a1, &size1);
     system("pause");
     if (k==2){
-        printf("1 - Display information about hospital employees\n");
-        scanf("%d", &n);
-        switch(n){
-            case 1:
-                outputInformationAboutHospitalEmployees(a, &size2);
-                break;
-            default:
-                printf("\nWrong number, please try again\n");
-                break;
+        while (m==0){
+            printf("1 - Display information about hospital employees\n2 - Exit\n");
+            scanf("%d", &n);
+            switch(n){
+                case 1:
+                    outputInformationAboutHospitalEmployees(a, &size2);
+                    system("pause");
+                    break;
+                case 2:
+                    m=-1;
+                    break;
+                default:
+                    printf("\nWrong number, please try again\n");
+                    break;
+            }
         }
     }
     system("pause");
