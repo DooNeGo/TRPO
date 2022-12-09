@@ -6,7 +6,6 @@ struct hospitalEmployee{
     int year;
     int month;
     int numberofDays;
-    int daysMissedDuetoIllness;
     float paymentinOneDay;                                                                                                                                                        
 }a[50];
 
@@ -36,11 +35,11 @@ void pass(int *k, struct users *a1, int *size){
             if (memcmp((a1+i)->login, login, maxNumofLetters)==0 && memcmp((a1+i)->password, password, maxNumofLetters)==0){
                 if (a1[i].role==1){
                     *k=1;
-                    printf("Enter succesful!\n");
+                    printf("Enter succesful!\nYou have entered as admin\n");
                     break;
                 }
                 else *k=2;
-                printf("Enter succesful!\n");
+                printf("Enter succesful!\nYou have entered as user\n");
                 break;
             }
         }
@@ -61,11 +60,31 @@ void pass(int *k, struct users *a1, int *size){
         }
     }
 }
+void outputInformationAboutHospitalEmployees(struct hospitalEmployee *a, int *size){
+    for (int i=0; i<*size; i++){
+        printf("| FIO: %2s | Year: %2d | Month: %2d | Number of days: %2d |\n", (a+i)->FIO, (a+i)->year, (a+i)->month, (a+i)->numberofDays, (a+i)->paymentinOneDay);
+    }
+}
 int main(){
-    int k=0, size;
+    int k=0, size1, n, size2, i;
     struct users a1[]={"admin", "admin", 1, "user", "user", 0};
-    size=sizeof(a1)/sizeof(a1[0]);
-    pass(&k, a1, &size);
+    size1=sizeof(a1)/sizeof(a1[0]);
+    struct hospitalEmployee a[]={"Kostroma Matvey Olegovich", 1, 11, 5, 8.54};
+    size2=sizeof(a)/sizeof(a[0]);
+    pass(&k, a1, &size1);
+    system("pause");
+    if (k==2){
+        printf("1 - Display information about hospital employees\n");
+        scanf("%d", &n);
+        switch(n){
+            case 1:
+                outputInformationAboutHospitalEmployees(a, &size2);
+                break;
+            default:
+                printf("\nWrong number, please try again\n");
+                break;
+        }
+    }
     system("pause");
     return 0;
 }
