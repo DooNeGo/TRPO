@@ -67,62 +67,60 @@ void outputInformationAboutHospitalEmployees(struct hospitalEmployee *a, int *si
     }
 }
 void editInformationAboutHospitalEmployees(struct hospitalEmployee *a, int *size){
-    int n, m=-1, n1, m1=0;
-    while (m!=0){
-        printf("1 - Choose person\n0 - Exit\n");
-        scanf("%d", &m);
-        switch(m){
-            case 1:
-                printf("Enter the employee's number: ");
-                scanf("%d", &n1);
-                if (n1<1 && n1>*size){
-                    printf("\nWrong number, please try again\n");
+    int n, m=0, n1=0, m1=0;
+    while (m==0){
+        printf("Enter the employee's number(0-Exit): ");
+        scanf("%d", &n1);
+        if ((n1<0) && (n1>*size)){
+            printf("\nWrong number, please try again\n");
+        }
+        else{
+            if (n1==0){
+                m=1;
+                break;     
+            }
+            else while (m1==0){
+                printf("\n1 - Edit surname\n2 - Edit name\n3 - Edit patronymic\n4 - Edit Number of years of absence due to illness");
+                printf("\n5 - Edit number of month of absence due to illness\n6 - Edit number of days of absence due to illness\n7 - Edit payment in one day\n0 - Exit\n");
+                scanf("%d", &n);
+                switch (n){
+                    case 1:
+                        printf("\nEnter new surname: ");
+                        scanf("%s", (a+n1-1)->surname);
+                        break;
+                    case 2:
+                        printf("\nEnter new name: ");
+                        scanf("%s", (a+n1-1)->name);
+                        break;
+                    case 3:
+                        printf("\nEnter new patronymic: ");
+                        scanf("%s", (a+n1-1)->patronymic);
+                        break;
+                    case 4:
+                        printf("\nEnter new number of years of absence due to illness: ");
+                        scanf("%d", (a+n1-1)->years);
+                        break;
+                    case 5:
+                        printf("\nEnter new number of month of absence due to illness: ");
+                        scanf("%d", (a+n1-1)->months);
+                        break;
+                    case 6:
+                        printf("\nEnter new number of days of absence due to illness: ");
+                        scanf("%d", (a+n1-1)->days);
+                        break;
+                    case 7:
+                        printf("\nEnter new payment in one day: ");
+                        scanf("%f", (a+n1-1)->paymentinOneDay);
+                        break;
+                    case 0:
+                        m1=1;
+                        n1=1;
+                        break;
+                    default:
+                        printf("\nWrong number, please try again\n");
+                        break;
                 }
-                else{
-                    while (m1==0){
-                        printf("\n1 - Edit surname\n2 - Edit name\n3 - Edit patronymic\n4 - Edit Number of years of absence due to illness");
-                        printf("\n5 - Edit number of month of absence due to illness\n6 - Edit number of days of absence due to illness\n7 - Edit payment in one day\n0 - Exit\n");
-                        scanf("%d", &n);
-                        switch (n){
-                            case 1:
-                                printf("\nEnter new surname: ");
-                                scanf("%s", (a+n1-1)->surname);
-                                break;
-                            case 2:
-                                printf("\nEnter new name: ");
-                                scanf("%s", (a+n1-1)->name);
-                                break;
-                            case 3:
-                                printf("\nEnter new patronymic: ");
-                                scanf("%s", (a+n1-1)->patronymic);
-                                break;
-                            case 4:
-                                printf("\nEnter new number of years of absence due to illness: ");
-                                scanf("%d", (a+n1-1)->years);
-                                break;
-                            case 5:
-                                printf("\nEnter new number of month of absence due to illness: ");
-                                scanf("%d", (a+n1-1)->months);
-                                break;
-                            case 6:
-                                printf("\nEnter new number of days of absence due to illness: ");
-                                scanf("%d", (a+n1-1)->days);
-                                break;
-                            case 7:
-                                printf("\nEnter new payment in one day: ");
-                                scanf("%f", (a+n1-1)->paymentinOneDay);
-                                break;
-                            case 0:
-                                m1=1;
-                                break;
-                            default:
-                                printf("\nWrong number, please try again\n");
-                                break;
-                        }
-                    }
-                }
-            case 0:
-                break;
+            }
         }
     }
 }
