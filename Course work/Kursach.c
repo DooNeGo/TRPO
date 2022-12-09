@@ -98,19 +98,19 @@ void editInformationAboutHospitalEmployees(struct hospitalEmployee *a, int *size
                                 break;
                             case 4:
                                 printf("\nEnter new number of years of absence due to illness: ");
-                                scanf("%s", (a+n1-1)->years);
+                                scanf("%d", (a+n1-1)->years);
                                 break;
                             case 5:
                                 printf("\nEnter new number of month of absence due to illness: ");
-                                scanf("%s", (a+n1-1)->months);
+                                scanf("%d", (a+n1-1)->months);
                                 break;
                             case 6:
                                 printf("\nEnter new number of days of absence due to illness: ");
-                                scanf("%s", (a+n1-1)->days);
+                                scanf("%d", (a+n1-1)->days);
                                 break;
                             case 7:
                                 printf("\nEnter new payment in one day: ");
-                                scanf("%s", (a+n1-1)->paymentinOneDay);
+                                scanf("%f", (a+n1-1)->paymentinOneDay);
                                 break;
                             case 0:
                                 m1=1;
