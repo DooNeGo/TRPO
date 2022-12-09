@@ -1,20 +1,20 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-typedef struct{
+struct hospitalEmployee{
     char FIO[50];
     int year;
     int month;
     int numberofDays;
     int daysMissedDuetoIllness;
     float paymentinOneDay;                                                                                                                                                        
-}hospitalEmployee;
+}a[50];
 
-typedef struct{
+struct users{
     char login[15];
     char password[15];
     int role;
-}users;
+}a1[5];
 void array_nulling(char *array, int size){
     for (int i=0; i<size; i++){
         *(array+i)=0;
@@ -24,7 +24,7 @@ void array_nulling(char *array, int size){
 void pass(int *k){
     int n, stop, size;
     char login[15], password[15];
-    users a1[]={"admin", "admin", 1, "user", "user", 0};
+    struct users a1[]={"admin", "admin", 1, "user", "user", 0};
     array_nulling(login, 15);
     array_nulling(password, 15);
     size=sizeof(a1)/sizeof(a1[0]);
@@ -35,7 +35,7 @@ void pass(int *k){
         printf("Password: ");
         scanf("%s", &password);
         for (int i=0; i<size; i++){
-            if (strcpy(a1[i].login, login)!=0 && strcpy(a1[i].password, password)!=0){
+            if (memcmp(a1[i].login, login, 15)==0 && memcmp(a1[i].password, password, 15)==0){
                 if (a1[i].role==1){
                     *k=1;
                     printf("Enter succesful!\n");
