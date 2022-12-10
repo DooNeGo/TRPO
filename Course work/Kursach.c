@@ -16,7 +16,7 @@ struct users
     char login[30];
     char password[30];
     int role;
-}a1[5];
+};
 void array_nulling(char *array, int *size)
 {
     for (int i=0; i<*size; i++)
@@ -41,7 +41,7 @@ void pass(int *k, struct users *a1, int *size)
         {
             if (memcmp((a1+i)->login, login, maxNumofLetters)==0 && memcmp((a1+i)->password, password, maxNumofLetters)==0)
             {
-                if (a1[i].role==1)
+                if ((a1+i)->role==1)
                 {
                     *k=1;
                     printf("Enter succesful!\nYou have entered as admin\n");
@@ -118,7 +118,7 @@ void editInformationAboutHospitalEmployees(struct hospitalEmployee *a, int *size
                         scanf("%d", &(a+n1-1)->years);
                         break;
                     case 5:
-                        printf("\nEnter new number of month of absence due to illness: ");
+                        printf("\nEnter new number of months of absence due to illness: ");
                         scanf("%d", &(a+n1-1)->months);
                         break;
                     case 6:
@@ -140,18 +140,52 @@ void editInformationAboutHospitalEmployees(struct hospitalEmployee *a, int *size
         
     }
 }
+void addNewUser(struct users *a1, int *size)
+{
+    printf("\nEnter Login: ");
+    scanf("%s", &((a1+*size)->login));
+    printf("\nEnter Password: ");
+    scanf("%s", &((a1+*size)->password));
+    printf("\nEnter Role(1 or 0): ");
+    scanf("%d", &((a1+*size)->role));
+    printf("\nNew user was added\n");
+    system("pause");
+}
+void outputUsers(struct users *a1, int *size)
+{
+    for (int i=0; i<*size; i++)
+    {
+        printf("%d.Login: %s  Password: %s  Role: %d\n", i+1, (a1+i)->login, (a1+i)->password, (a1+i)->role);
+    }
+    system("pause");
+}
+void addNewHospitalEmployee(struct hospitalEmployee *a, int *size)
+{
+    printf("Enter FIO: ");
+    scanf("%s %s %s", &(a+*size)->surname, &(a+*size)->name, &(a+*size)->patronymic);
+    printf("Enter number of years of absence due to illness: ");
+    scanf("%d", &((a+*size)->years));
+    printf("Enter number of months of absence due to illness: ");
+    scanf("%d", &((a+*size)->months));
+    printf("Enter number of days of absence due to illness: ");
+    scanf("%d", &((a+*size)->days));
+    printf("Enter payment in one day: ");
+    scanf("%f", &((a+*size)->paymentinOneDay));
+    printf("New hospital employee was added\n");
+    system("pause");
+}
 int main()
 {
-    int k=0, size1, n, size2, m=0;
-    struct users a1[]={"admin", "admin", 1, "user", "user", 0};
-    size1=sizeof(a1)/sizeof(a1[0]);
-    struct hospitalEmployee a[]={"Kostroma", "Matvey", "Olegovich", 2018, 11, 5, 8.54};
-    size2=sizeof(a)/sizeof(a[0]);
+    int k=0, size1=2, n, size2=1, m=0;
+    struct users a1[3]={"admin", "admin", 1, "user", "user", 0};
+    struct hospitalEmployee a[3]={"Kostroma", "Matvey", "Olegovich", 2018, 11, 5, 8.54};
     pass(&k, a1, &size1);
     system("pause");
     if (k==2)
     {
-        while (m==0){
+        m=0;
+        while (m==0)
+        {
             printf("1 - Display information about hospital employees\n2 - Exit\n");
             scanf("%d", &n);
             switch(n)
@@ -171,9 +205,10 @@ int main()
     }
     if (k==1)
     {
+        m=0;
         while (m==0)
         {
-            printf("1 - Display information about hospital employees\n2 - Exit\n3 - Edit information about hospital employees\n");
+            printf("1 - Display information about hospital employees\n2 - Exit\n3 - Edit information about hospital employees\n4 - Add new user\n5 - Display all users\n6 - Add new hospital employee\n");
             scanf("%d", &n);
             switch(n)
             {
@@ -187,6 +222,17 @@ int main()
                 case 3:
                     outputInformationAboutHospitalEmployees(a, &size2);
                     editInformationAboutHospitalEmployees(a, &size2);
+                    break;
+                case 4:
+                    addNewUser(a1, &size1);
+                    size1++;
+                    break;
+                case 5:
+                    outputUsers(a1, &size1);
+                    break;
+                case 6:
+                    addNewHospitalEmployee(a, &size2);
+                    size2++;
                     break;
                 default:
                     printf("\nWrong number, please try again\n");
