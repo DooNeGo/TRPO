@@ -176,6 +176,66 @@ void addNewHospitalEmployee(struct hospitalEmployee *a, int *size)
     printf("New hospital employee was added\n");
     system("pause");
 }
+void usercapabilities(struct hospitalEmployee *a, int *sizeEmployee)
+{
+    int stop=0, n;
+    while (stop==0)
+    {
+        printf("1 - Display information about hospital employees\n0 - Exit\n");
+        scanf("%d", &n);
+        switch(n)
+        {
+            case 1:
+                outputInformationAboutHospitalEmployees(a, sizeEmployee);
+                system("pause");
+                break;
+            case 0:
+                stop=1;
+                break;
+            default:
+                printf("Wrong number, please try again\n");
+                break;
+        }
+    }
+        
+}
+void admincapabilities(struct hospitalEmployee *a, struct users *a1, int *sizeEmployee, int *sizeUsers)
+{
+    int stop=0, n;
+    while (stop==0)
+    {
+        printf("1 - Display information about hospital employees\n2 - Edit information about hospital employees\n3 - Add new user\n4 - Display all users\n5 - Add new hospital employee\n0 - Exit\n");
+        scanf("%d", &n);
+        switch(n)
+        {
+            case 1:
+                outputInformationAboutHospitalEmployees(a, sizeEmployee);
+                system("pause");
+                break;
+            case 2:
+                outputInformationAboutHospitalEmployees(a, sizeEmployee);
+                editInformationAboutHospitalEmployees(a, sizeEmployee);
+                break;
+            case 3:
+                addNewUser(a1, sizeUsers);
+                (*sizeUsers)++;
+                break;
+            case 4:
+                outputUsers(a1, sizeUsers);
+                break;
+            case 5:
+                addNewHospitalEmployee(a, sizeEmployee);
+                (*sizeEmployee)++;
+                break;
+            case 0:
+                stop=1;
+                break;
+            default:
+                printf("\nWrong number, please try again\n");
+                break;
+        }
+    }
+}
 int main()
 {
     int k, sizeUsers=2, n, sizeEmployee=1, stop1, n1, stopmain=0;
@@ -185,65 +245,8 @@ int main()
     while (stopmain==0)
     {
         pass(&k, a1, &sizeUsers);
-        if (k==2)
-        {
-            stop1=0;
-            while (stop1==0)
-            {
-                printf("1 - Display information about hospital employees\n0 - Exit\n");
-                scanf("%d", &n);
-                switch(n)
-                {
-                    case 1:
-                        outputInformationAboutHospitalEmployees(a, &sizeEmployee);
-                        system("pause");
-                        break;
-                    case 0:
-                        stop1=1;
-                        break;
-                    default:
-                        printf("Wrong number, please try again\n");
-                        break;
-                }
-            }
-        }
-        if (k==1)
-        {
-            stop1=0;
-            while (stop1==0)
-            {
-                printf("1 - Display information about hospital employees\n2 - Edit information about hospital employees\n3 - Add new user\n4 - Display all users\n5 - Add new hospital employee\n0 - Exit\n");
-                scanf("%d", &n);
-                switch(n)
-                {
-                    case 1:
-                        outputInformationAboutHospitalEmployees(a, &sizeEmployee);
-                        system("pause");
-                        break;
-                    case 2:
-                        outputInformationAboutHospitalEmployees(a, &sizeEmployee);
-                        editInformationAboutHospitalEmployees(a, &sizeEmployee);
-                        break;
-                    case 3:
-                        addNewUser(a1, &sizeUsers);
-                        sizeUsers++;
-                        break;
-                    case 4:
-                        outputUsers(a1, &sizeUsers);
-                        break;
-                    case 5:
-                        addNewHospitalEmployee(a, &sizeEmployee);
-                        sizeEmployee++;
-                        break;
-                    case 0:
-                        stop1=1;
-                        break;
-                    default:
-                        printf("\nWrong number, please try again\n");
-                        break;
-                }
-            }
-        }
+        if (k==2) usercapabilities(a, &sizeEmployee);
+        if (k==1) admincapabilities(a, a1, &sizeEmployee, &sizeUsers);
         stop1=0;
         while(stop1==0){
             printf("1 - Log in\n0 - Close programm\n");
