@@ -178,13 +178,13 @@ void addNewHospitalEmployee(struct hospitalEmployee *a, int *size)
 }
 int main()
 {
-    int k, size1=2, n, size2=1, stop1, n1, stopmain=0;
+    int k, sizeUsers=2, n, sizeEmployee=1, stop1, n1, stopmain=0;
     struct users a1[3]={"admin", "admin", 1, "user", "user", 0};
-    //struct users *a1=(struct users*)calloc(size1, sizeof(struct users));
+    //struct users *a1=(struct users*)calloc(sizeUsers, sizeof(struct users));
     struct hospitalEmployee a[3]={"Kostroma", "Matvey", "Olegovich", 2018, 11, 5, 8.54};
     while (stopmain==0)
     {
-        pass(&k, a1, &size1);
+        pass(&k, a1, &sizeUsers);
         if (k==2)
         {
             stop1=0;
@@ -195,7 +195,7 @@ int main()
                 switch(n)
                 {
                     case 1:
-                        outputInformationAboutHospitalEmployees(a, &size2);
+                        outputInformationAboutHospitalEmployees(a, &sizeEmployee);
                         system("pause");
                         break;
                     case 0:
@@ -217,23 +217,23 @@ int main()
                 switch(n)
                 {
                     case 1:
-                        outputInformationAboutHospitalEmployees(a, &size2);
+                        outputInformationAboutHospitalEmployees(a, &sizeEmployee);
                         system("pause");
                         break;
                     case 2:
-                        outputInformationAboutHospitalEmployees(a, &size2);
-                        editInformationAboutHospitalEmployees(a, &size2);
+                        outputInformationAboutHospitalEmployees(a, &sizeEmployee);
+                        editInformationAboutHospitalEmployees(a, &sizeEmployee);
                         break;
                     case 3:
-                        addNewUser(a1, &size1);
-                        size1++;
+                        addNewUser(a1, &sizeUsers);
+                        sizeUsers++;
                         break;
                     case 4:
-                        outputUsers(a1, &size1);
+                        outputUsers(a1, &sizeUsers);
                         break;
                     case 5:
-                        addNewHospitalEmployee(a, &size2);
-                        size2++;
+                        addNewHospitalEmployee(a, &sizeEmployee);
+                        sizeEmployee++;
                         break;
                     case 0:
                         stop1=1;
