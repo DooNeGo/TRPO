@@ -10,7 +10,7 @@ struct hospitalEmployee
     int months;
     int days;
     float paymentinOneDay;                                                                                                                                                        
-}a[50];
+};
 struct users
 {
     char login[30];
@@ -28,11 +28,12 @@ void pass(int *k, struct users *a1, int *size)
 {
     int n, stop, maxNumofLetters=30;
     char login[maxNumofLetters], password[maxNumofLetters];
+    *k=0;
     while (*k==0)
     {
+        stop=0;
         array_nulling(login, &maxNumofLetters);
         array_nulling(password, &maxNumofLetters);
-        stop=0;
         printf("Login: ");
         scanf("%s", &login);
         printf("Password: ");
@@ -44,18 +45,18 @@ void pass(int *k, struct users *a1, int *size)
                 if ((a1+i)->role==1)
                 {
                     *k=1;
-                    printf("Enter succesful!\nYou have entered as admin\n");
+                    printf("Enter succesful! You have entered as an admin\n");
                     break;
                 }
                 else *k=2;
-                printf("Enter succesful!\nYou have entered as user\n");
+                printf("Enter succesful! You have entered as a user\n");
                 break;
             }
         }
         if (*k==0) printf("\nWrong login or password\n");
         while ((*k==0) && stop!=1)
         {
-            printf("1 - Try logging in again\n2 - Exit\n");
+            printf("1 - Try log in again\n2 - Close program\n");
             scanf("%d", &n);
             switch(n)
             {
@@ -70,6 +71,7 @@ void pass(int *k, struct users *a1, int *size)
             }
         }
     }
+    system("pause");
 }
 void outputInformationAboutHospitalEmployees(struct hospitalEmployee *a, int *size)
 {
@@ -80,21 +82,21 @@ void outputInformationAboutHospitalEmployees(struct hospitalEmployee *a, int *si
 }
 void editInformationAboutHospitalEmployees(struct hospitalEmployee *a, int *size)
 {
-    int n, m=0, n1=0, m1=0;
-    while (m==0)
+    int n, stop=0, n1, stop1=0;
+    while (stop==0)
     {
         printf("Enter the employee's number(0-Exit): ");
         scanf("%d", &n1);
-        m1=0;
+        stop1=0;
         if ((n1<0) || (n1>*size))
         {
             printf("\nWrong number, please try again\n");
         }
         else if (n1==0)
         {
-                m=1;     
+                stop=1;     
         }
-        else while (m1==0)
+        else while (stop1==0)
         {
             printf("\n1 - Edit surname\n2 - Edit name\n3 - Edit patronymic\n4 - Edit Number of years of absence due to illness");
             printf("\n5 - Edit number of month of absence due to illness\n6 - Edit number of days of absence due to illness\n7 - Edit payment in one day\n0 - Exit\n");
@@ -130,7 +132,7 @@ void editInformationAboutHospitalEmployees(struct hospitalEmployee *a, int *size
                         scanf("%f", &(a+n1-1)->paymentinOneDay);
                         break;
                     case 0:
-                        m1=1;
+                        stop1=1;
                         break;
                     default:
                         printf("\nWrong number, please try again\n");
@@ -142,13 +144,13 @@ void editInformationAboutHospitalEmployees(struct hospitalEmployee *a, int *size
 }
 void addNewUser(struct users *a1, int *size)
 {
-    printf("\nEnter Login: ");
+    printf("Enter Login: ");
     scanf("%s", &((a1+*size)->login));
-    printf("\nEnter Password: ");
+    printf("Enter Password: ");
     scanf("%s", &((a1+*size)->password));
-    printf("\nEnter Role(1 or 0): ");
+    printf("Enter Role(1 or 0): ");
     scanf("%d", &((a1+*size)->role));
-    printf("\nNew user was added\n");
+    printf("New user was added\n");
     system("pause");
 }
 void outputUsers(struct users *a1, int *size)
@@ -176,67 +178,88 @@ void addNewHospitalEmployee(struct hospitalEmployee *a, int *size)
 }
 int main()
 {
-    int k=0, size1=2, n, size2=1, m=0;
+    int k, size1=2, n, size2=1, stop1, n1, stopmain=0;
     struct users a1[3]={"admin", "admin", 1, "user", "user", 0};
+    //struct users *a1=(struct users*)calloc(size1, sizeof(struct users));
     struct hospitalEmployee a[3]={"Kostroma", "Matvey", "Olegovich", 2018, 11, 5, 8.54};
-    pass(&k, a1, &size1);
-    system("pause");
-    if (k==2)
+    while (stopmain==0)
     {
-        m=0;
-        while (m==0)
+        pass(&k, a1, &size1);
+        if (k==2)
         {
-            printf("1 - Display information about hospital employees\n2 - Exit\n");
-            scanf("%d", &n);
-            switch(n)
+            stop1=0;
+            while (stop1==0)
             {
-                case 1:
-                    outputInformationAboutHospitalEmployees(a, &size2);
-                    system("pause");
-                    break;
-                case 2:
-                    m=-1;
-                    break;
-                default:
-                    printf("\nWrong number, please try again\n");
-                    break;
+                printf("1 - Display information about hospital employees\n0 - Exit\n");
+                scanf("%d", &n);
+                switch(n)
+                {
+                    case 1:
+                        outputInformationAboutHospitalEmployees(a, &size2);
+                        system("pause");
+                        break;
+                    case 0:
+                        stop1=1;
+                        break;
+                    default:
+                        printf("Wrong number, please try again\n");
+                        break;
+                }
             }
         }
-    }
-    if (k==1)
-    {
-        m=0;
-        while (m==0)
+        if (k==1)
         {
-            printf("1 - Display information about hospital employees\n2 - Exit\n3 - Edit information about hospital employees\n4 - Add new user\n5 - Display all users\n6 - Add new hospital employee\n");
-            scanf("%d", &n);
-            switch(n)
+            stop1=0;
+            while (stop1==0)
             {
-                case 1:
-                    outputInformationAboutHospitalEmployees(a, &size2);
-                    system("pause");
-                    break;
-                case 2:
-                    m=1;
-                    break;
-                case 3:
-                    outputInformationAboutHospitalEmployees(a, &size2);
-                    editInformationAboutHospitalEmployees(a, &size2);
-                    break;
-                case 4:
-                    addNewUser(a1, &size1);
-                    size1++;
-                    break;
-                case 5:
-                    outputUsers(a1, &size1);
-                    break;
-                case 6:
-                    addNewHospitalEmployee(a, &size2);
-                    size2++;
-                    break;
-                default:
-                    printf("\nWrong number, please try again\n");
-                    break;
+                printf("1 - Display information about hospital employees\n2 - Edit information about hospital employees\n3 - Add new user\n4 - Display all users\n5 - Add new hospital employee\n0 - Exit\n");
+                scanf("%d", &n);
+                switch(n)
+                {
+                    case 1:
+                        outputInformationAboutHospitalEmployees(a, &size2);
+                        system("pause");
+                        break;
+                    case 2:
+                        outputInformationAboutHospitalEmployees(a, &size2);
+                        editInformationAboutHospitalEmployees(a, &size2);
+                        break;
+                    case 3:
+                        addNewUser(a1, &size1);
+                        size1++;
+                        break;
+                    case 4:
+                        outputUsers(a1, &size1);
+                        break;
+                    case 5:
+                        addNewHospitalEmployee(a, &size2);
+                        size2++;
+                        break;
+                    case 0:
+                        stop1=1;
+                        break;
+                    default:
+                        printf("\nWrong number, please try again\n");
+                        break;
+                }
+            }
+        }
+        stop1=0;
+        while(stop1==0){
+            printf("1 - Log in\n0 - Close programm\n");
+            scanf("%d", &n1);
+            switch (n1)
+            {
+            case 1:
+                stop1=1;
+                break;
+            case 0:
+                stop1=1;
+                stopmain=1;
+                break;
+            default:
+                printf("\nWrong number, please try again\n");
+                break;
             }
         }
     }
