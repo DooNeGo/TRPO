@@ -100,46 +100,45 @@ void editInformationAboutHospitalEmployees(struct hospitalEmployee *a, int *size
         {
             printf("\n1 - Edit surname\n2 - Edit name\n3 - Edit patronymic\n4 - Edit Number of years of absence due to illness");
             printf("\n5 - Edit number of month of absence due to illness\n6 - Edit number of days of absence due to illness\n7 - Edit payment in one day\n0 - Exit\n");
-                scanf("%d", &n);
-                switch (n)
-                {
-                    case 1:
-                        printf("\nEnter new surname: ");
-                        scanf("%s", &(a+n1-1)->surname);
-                        break;
-                    case 2:
-                        printf("\nEnter new name: ");
-                        scanf("%s", &(a+n1-1)->name);
-                        break;
-                    case 3:
-                        printf("\nEnter new patronymic: ");
-                        scanf("%s", &(a+n1-1)->patronymic);
-                        break;
-                    case 4:
-                        printf("\nEnter new number of years of absence due to illness: ");
-                        scanf("%d", &(a+n1-1)->years);
-                        break;
-                    case 5:
-                        printf("\nEnter new number of months of absence due to illness: ");
-                        scanf("%d", &(a+n1-1)->months);
-                        break;
-                    case 6:
-                        printf("\nEnter new number of days of absence due to illness: ");
-                        scanf("%d", &(a+n1-1)->days);
-                        break;
-                    case 7:
-                        printf("\nEnter new payment in one day: ");
-                        scanf("%f", &(a+n1-1)->paymentinOneDay);
-                        break;
-                    case 0:
-                        stop1=1;
-                        break;
-                    default:
-                        printf("\nWrong number, please try again\n");
-                        break;
-                }
+            scanf("%d", &n);
+            switch (n)
+            {
+                case 1:
+                    printf("\nEnter new surname: ");
+                    scanf("%s", &(a+n1-1)->surname);
+                    break;
+                case 2:
+                    printf("\nEnter new name: ");
+                    scanf("%s", &(a+n1-1)->name);
+                    break;
+                case 3:
+                    printf("\nEnter new patronymic: ");
+                    scanf("%s", &(a+n1-1)->patronymic);
+                    break;
+                case 4:
+                    printf("\nEnter new number of years of absence due to illness: ");
+                    scanf("%d", &(a+n1-1)->years);
+                    break;
+                case 5:
+                    printf("\nEnter new number of months of absence due to illness: ");
+                    scanf("%d", &(a+n1-1)->months);
+                    break;
+                case 6:
+                    printf("\nEnter new number of days of absence due to illness: ");
+                    scanf("%d", &(a+n1-1)->days);
+                    break;
+                case 7:
+                    printf("\nEnter new payment in one day: ");
+                    scanf("%f", &(a+n1-1)->paymentinOneDay);
+                    break;
+                case 0:
+                    stop1=1;
+                    break;
+                default:
+                    printf("\nWrong number, please try again\n");
+                    break;
             }
-        
+        }
     }
 }
 void addNewUser(struct users *a1, int *size)
@@ -196,8 +195,7 @@ void usercapabilities(struct hospitalEmployee *a, int *sizeEmployee)
                 printf("Wrong number, please try again\n");
                 break;
         }
-    }
-        
+    }     
 }
 void admincapabilities(struct hospitalEmployee *a, struct users *a1, int *sizeEmployee, int *sizeUsers)
 {
