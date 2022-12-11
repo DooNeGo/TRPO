@@ -94,7 +94,7 @@ void editInformationAboutHospitalEmployees(struct hospitalEmployee *a, int *size
         else if (n1==0) stop=1;     
         else while (stop1==0)
         {
-            printf("\n1 - Edit surname\n2 - Edit name\n3 - Edit patronymic\n4 - Edit Number of years of absence due to illness");
+            printf("1 - Edit surname\n2 - Edit name\n3 - Edit patronymic\n4 - Edit Number of years of absence due to illness");
             printf("\n5 - Edit number of month of absence due to illness\n6 - Edit number of days of absence due to illness\n7 - Edit payment in one day\n0 - Exit\n");
             scanf("%d", &n);
             switch (n)
@@ -102,30 +102,37 @@ void editInformationAboutHospitalEmployees(struct hospitalEmployee *a, int *size
                 case 1:
                     printf("\nEnter new surname: ");
                     scanf("%s", &(a+n1-1)->surname);
+                    printf("Surname has been changed\n");
                     break;
                 case 2:
                     printf("\nEnter new name: ");
                     scanf("%s", &(a+n1-1)->name);
+                    printf("Name has been changed\n");
                     break;
                 case 3:
                     printf("\nEnter new patronymic: ");
                     scanf("%s", &(a+n1-1)->patronymic);
+                    printf("Patronymic has been changed\n");
                     break;
                 case 4:
                     printf("\nEnter new number of years of absence due to illness: ");
                     scanf("%d", &(a+n1-1)->years);
+                    printf("Number of years of absence due to illness has been changed\n");
                     break;
                 case 5:
                     printf("\nEnter new number of months of absence due to illness: ");
                     scanf("%d", &(a+n1-1)->months);
+                    printf("Number of months of absence due to illness has been changed\n");
                     break;
                 case 6:
                     printf("\nEnter new number of days of absence due to illness: ");
                     scanf("%d", &(a+n1-1)->days);
+                    printf("Number of days of absence due to illness has been changed\n");
                     break;
                 case 7:
                     printf("\nEnter new payment in one day: ");
                     scanf("%f", &(a+n1-1)->paymentinOneDay);
+                    printf("Payment in one day has been changed\n");
                     break;
                 case 0:
                     stop1=1;
@@ -166,6 +173,7 @@ void addNewHospitalEmployee(struct hospitalEmployee *a, int *size)
     printf("Enter payment in one day: ");
     scanf("%f", &((a+*size)->paymentinOneDay));
     printf("New hospital employee was added\n");
+    (*size)++;
     system("pause");
 }
 void editUsers(struct users *a1, int *size)
@@ -187,18 +195,22 @@ void editUsers(struct users *a1, int *size)
                 case 1:
                     printf("Enter new login: ");
                     scanf("%s", &(a1+n-1)->login);
+                    printf("Login has been changed\n");
                     break;
                 case 2:
                     printf("Enter new password: ");
                     scanf("%s", &(a1+n-1)->password);
+                    printf("Password has been changed\n");
                     break;
                 case 3:
                     while (stop2==0)
                     {
                         printf("Enter new role(1 or 0): ");
                         scanf("%d", &(a1+n-1)->role);
-                        if ((a1+n-1)->role==1 || (a1+n1-1)->role==0) stop2=1;
+                        if ((a1+n-1)->role==1 || (a1+n-1)->role==0) stop2=1;
+                        else printf("\nWrong number, please try again\n");
                     }
+                    printf("Role has been changed\n");
                     break;
                 case 0:
                     stop1=1;
@@ -258,7 +270,6 @@ void admincapabilities(struct hospitalEmployee *a, struct users *a1, int *sizeEm
                 break;
             case 5:
                 addNewHospitalEmployee(a, sizeEmployee);
-                (*sizeEmployee)++;
                 break;
             case 6:
                 editUsers(a1, sizeUsers);
