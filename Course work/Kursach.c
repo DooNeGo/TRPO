@@ -188,7 +188,7 @@ void addNewUser(struct users *a1, int *sizeUsers)
         stop=1;
         printf("Enter Login (Q(q)-Exit): ");
         scanf("%s", &((a1+*sizeUsers)->login));
-        if (memcmp((a1+*sizeUsers)->login, "q", 1)==0 || memcmp((a1+*sizeUsers)->login, "Q", 1)==0) stop=2;
+        if (memcmp((a1+*sizeUsers)->login, "Q", 2)==0 || memcmp((a1+*sizeUsers)->login, "q", 2)==0) stop=2;
         else for (i=0; i<*sizeUsers; i++)
         {
             if (strcmp((a1+*sizeUsers)->login, (a1+i)->login)==0)
