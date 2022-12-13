@@ -78,10 +78,14 @@ void pass(int *role, struct users *a1, int *sizeUsers, int *stopmain, int *userN
 }
 void outputHospitalEmployees(struct hospitalEmployee *a, int *sizeEmployee)
 {
-    for (int i=0; i<*sizeEmployee; i++)
+    if (*sizeEmployee>0)
     {
-        printf("%d.|FIO: %2s %2s %2s | Year: %2d | Month: %2d | Number of days: %2d | Payment in one day: %2.3f|\n", i+1, (a+i)->surname, (a+i)->name, (a+i)->patronymic, (a+i)->years, (a+i)->months, (a+i)->days, (a+i)->paymentinOneDay);
+        for (int i=0; i<*sizeEmployee; i++)
+        {
+            printf("%d.|FIO: %2s %2s %2s | Year: %2d | Month: %2d | Number of days: %2d | Payment in one day: %2.3f|\n", i+1, (a+i)->surname, (a+i)->name, (a+i)->patronymic, (a+i)->years, (a+i)->months, (a+i)->days, (a+i)->paymentinOneDay);
+        }
     }
+    else printf("\nThere are no hospital employees in the database\n");
 }
 void editHospitalEmployees(struct hospitalEmployee *a, int *sizeEmployee)
 {
@@ -89,62 +93,67 @@ void editHospitalEmployees(struct hospitalEmployee *a, int *sizeEmployee)
     while (stop==0)
     {
         outputHospitalEmployees(a, sizeEmployee);
-        printf("Enter the employee's number(0-Exit): ");
-        scanf("%d", &n1);
-        stop1=0;
-        if ((n1<0) || (n1>*sizeEmployee)) printf("\nWrong number, please try again\n");
-        else if (n1==0) stop=1;     
-        else while (stop1==0)
+        if (*sizeEmployee>0)
         {
-            printf("1 - Edit surname\n2 - Edit name\n3 - Edit patronymic\n4 - Edit Number of years of absence due to illness");
-            printf("\n5 - Edit number of month of absence due to illness\n6 - Edit number of days of absence due to illness\n7 - Edit payment in one day\n0 - Exit\n");
-            scanf("%d", &n);
-            switch (n)
+            printf("Enter the employee's number(0-Exit): ");
+            scanf("%d", &n1);
+            stop1=0;
+            if ((n1<0) || (n1>*sizeEmployee)) printf("\nWrong number, please try again\n");
+            else if (n1==0) stop=1;     
+            else while (stop1==0)
             {
-                case 1:
-                    printf("\nEnter new surname: ");
-                    scanf("%s", &(a+n1-1)->surname);
-                    printf("Surname has been changed\n");
-                    break;
-                case 2:
-                    printf("\nEnter new name: ");
-                    scanf("%s", &(a+n1-1)->name);
-                    printf("Name has been changed\n");
-                    break;
-                case 3:
-                    printf("\nEnter new patronymic: ");
-                    scanf("%s", &(a+n1-1)->patronymic);
-                    printf("Patronymic has been changed\n");
-                    break;
-                case 4:
-                    printf("\nEnter new number of years of absence due to illness: ");
-                    scanf("%d", &(a+n1-1)->years);
-                    printf("Number of years of absence due to illness has been changed\n");
-                    break;
-                case 5:
-                    printf("\nEnter new number of months of absence due to illness: ");
-                    scanf("%d", &(a+n1-1)->months);
-                    printf("Number of months of absence due to illness has been changed\n");
-                    break;
-                case 6:
-                    printf("\nEnter new number of days of absence due to illness: ");
-                    scanf("%d", &(a+n1-1)->days);
-                    printf("Number of days of absence due to illness has been changed\n");
-                    break;
-                case 7:
-                    printf("\nEnter new payment in one day: ");
-                    scanf("%f", &(a+n1-1)->paymentinOneDay);
-                    printf("Payment in one day has been changed\n");
-                    break;
-                case 0:
-                    stop1=1;
-                    break;
-                default:
-                    printf("\nWrong number, please try again\n");
-                    break;
+                printf("1 - Edit surname\n2 - Edit name\n3 - Edit patronymic\n4 - Edit Number of years of absence due to illness");
+                printf("\n5 - Edit number of month of absence due to illness\n6 - Edit number of days of absence due to illness\n7 - Edit payment in one day\n0 - Exit\n");
+                scanf("%d", &n);
+                switch (n)
+                {
+                    case 1:
+                        printf("\nEnter new surname: ");
+                        scanf("%s", &(a+n1-1)->surname);
+                        printf("Surname has been changed\n");
+                        break;
+                    case 2:
+                        printf("\nEnter new name: ");
+                        scanf("%s", &(a+n1-1)->name);
+                        printf("Name has been changed\n");
+                        break;
+                    case 3:
+                        printf("\nEnter new patronymic: ");
+                        scanf("%s", &(a+n1-1)->patronymic);
+                        printf("Patronymic has been changed\n");
+                        break;
+                    case 4:
+                        printf("\nEnter new number of years of absence due to illness: ");
+                        scanf("%d", &(a+n1-1)->years);
+                        printf("Number of years of absence due to illness has been changed\n");
+                        break;
+                    case 5:
+                        printf("\nEnter new number of months of absence due to illness: ");
+                        scanf("%d", &(a+n1-1)->months);
+                        printf("Number of months of absence due to illness has been changed\n");
+                        break;
+                    case 6:
+                        printf("\nEnter new number of days of absence due to illness: ");
+                        scanf("%d", &(a+n1-1)->days);
+                        printf("Number of days of absence due to illness has been changed\n");
+                        break;
+                    case 7:
+                        printf("\nEnter new payment in one day: ");
+                        scanf("%f", &(a+n1-1)->paymentinOneDay);
+                        printf("Payment in one day has been changed\n");
+                        break;
+                    case 0:
+                        stop1=1;
+                        break;
+                    default:
+                        printf("\nWrong number, please try again\n");
+                        break;
+                }
             }
         }
+        else stop=1;
     }
+    system("pause");
 }
 void deleteHospitalEmployee(struct hospitalEmployee *a, int *sizeEmployee)
 {
@@ -152,33 +161,37 @@ void deleteHospitalEmployee(struct hospitalEmployee *a, int *sizeEmployee)
     while (stop==0)
     {
         outputHospitalEmployees(a, sizeEmployee);
-        printf("Enter the employee's number(0-Exit): ");
-        scanf("%d", &n);
-        if ((n<0) || (n>*sizeEmployee)) printf("\nWrong number, please try again\n");
-        else if (n==0) stop=1;
-        else if (n==*sizeEmployee)
+        if (*sizeEmployee>0)
         {
-            printf("Delete hospital employee successfully\n");
-            (*sizeEmployee)--;
-            system("pause");
-        }
-        else
-        {
-            for (i=n-1; i<*sizeEmployee-1; i++)
+            printf("Enter the employee's number(0-Exit): ");
+            scanf("%d", &n);
+            if ((n<0) || (n>*sizeEmployee)) printf("\nWrong number, please try again\n");
+            else if (n==0) stop=1;
+            else if (n==*sizeEmployee)
             {
-                strcpy((a+i)->surname, (a+i+1)->surname);
-                strcpy((a+i)->name, (a+i+1)->name);
-                strcpy((a+i)->patronymic, (a+i+1)->patronymic);
-                (a+i)->years=(a+i+1)->years;
-                (a+i)->months=(a+i+1)->months;
-                (a+i)->days=(a+i+1)->days;
-                (a+i)->paymentinOneDay=(a+i+1)->paymentinOneDay;
+                printf("Delete hospital employee successfully\n");
+                (*sizeEmployee)--;
+                system("pause");
             }
-            (*sizeEmployee)--;
-            printf("Delete hospital employee successfully\n");
-            system("pause");
+            else
+            {
+                for (i=n-1; i<*sizeEmployee-1; i++)
+                {
+                    strcpy((a+i)->surname, (a+i+1)->surname);
+                    strcpy((a+i)->name, (a+i+1)->name);
+                    strcpy((a+i)->patronymic, (a+i+1)->patronymic);
+                    (a+i)->years=(a+i+1)->years;
+                    (a+i)->months=(a+i+1)->months;
+                    (a+i)->days=(a+i+1)->days;
+                    (a+i)->paymentinOneDay=(a+i+1)->paymentinOneDay;
+                }
+                (*sizeEmployee)--;
+                printf("Delete hospital employee successfully\n");
+            }
         }
+        else stop=1;
     }
+    system("pause");
 }
 void addNewUser(struct users *a1, int *sizeUsers)
 {
