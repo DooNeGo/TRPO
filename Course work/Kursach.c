@@ -186,7 +186,7 @@ void addNewUser(struct users *a1, int *sizeUsers)
     while (stop==0)
     {
         stop=1;
-        printf("Enter Login((Q)uit): ");
+        printf("Enter Login (Q(q)-Exit): ");
         scanf("%s", &((a1+*sizeUsers)->login));
         if (memcmp((a1+*sizeUsers)->login, "q", 1)==0 || memcmp((a1+*sizeUsers)->login, "Q", 1)==0) stop=2;
         else for (i=0; i<*sizeUsers; i++)
