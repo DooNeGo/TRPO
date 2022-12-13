@@ -28,8 +28,8 @@ void pass(int *role, struct users *a1, int *sizeUsers, int *stopmain, int *userN
 {
     int n, stop, maxNumofLetters=30;
     char login[maxNumofLetters], password[maxNumofLetters];
-    *role=0;
-    while (*role==0)
+    *userNum=0;
+    while (*userNum==0)
     {
         stop=0;
         array_nulling(login, &maxNumofLetters);
@@ -42,7 +42,7 @@ void pass(int *role, struct users *a1, int *sizeUsers, int *stopmain, int *userN
         {
             if (strcmp((a1+i)->login, login)==0 && strcmp((a1+i)->password, password)==0)
             {
-                *userNum=i;
+                *userNum=i+1;
                 if ((a1+i)->role==1)
                 {
                     *role=1;
@@ -55,8 +55,8 @@ void pass(int *role, struct users *a1, int *sizeUsers, int *stopmain, int *userN
                 }
             }
         }
-        if (*role==0) printf("\nWrong login or password\n");
-        while ((*role==0) && stop!=1)
+        if (*userNum==0) printf("\nWrong login or password\n");
+        while ((*userNum==0) && stop!=1)
         {
             printf("1 - Try log in again\n2 - Close program\n");
             scanf("%d", &n);
@@ -66,7 +66,7 @@ void pass(int *role, struct users *a1, int *sizeUsers, int *stopmain, int *userN
                     stop=1;
                     break;
                 case 2:
-                    *role=-1;
+                    *userNum=-1;
                     *stopmain=1;
                     break;
                 default:
@@ -74,7 +74,7 @@ void pass(int *role, struct users *a1, int *sizeUsers, int *stopmain, int *userN
             }
         }
     }
-    if (*role!=-1) system("pause");
+    if (*userNum!=-1) system("pause");
 }
 void outputHospitalEmployees(struct hospitalEmployee *a, int *sizeEmployee)
 {
@@ -249,7 +249,7 @@ void editUsers(struct users *a1, int *size, int *userNum)
         scanf("%d", &n);
         if ((n<0) || (n>*size)) printf("\nWrong number, please try again\n");
         else if (n==0) stop=1;
-        else if (n==*userNum+1)
+        else if (n==*userNum)
         {
             printf("You can't edit an active user!!!\n");
             system("pause");
@@ -301,7 +301,7 @@ void deleteUser(struct users *a1, int *sizeUsers, int *userNum)
         scanf("%d", &n);
         if ((n<0) || (n>*sizeUsers)) printf("\nWrong number, please try again\n");
         else if (n==0) stop=1;
-        else if (n==(*userNum)+1)
+        else if (n==*userNum)
         {
             printf("You can't delete an active user!!!\n");
             system("pause");
@@ -321,7 +321,7 @@ void deleteUser(struct users *a1, int *sizeUsers, int *userNum)
                 (a1+i)->role=(a1+i+1)->role;
             }
             (*sizeUsers)--;
-            if (*userNum+1>n) (*userNum)--;
+            if (*userNum>n) (*userNum)--;
             printf("Delete user successfully\n");
             system("pause");
         }
@@ -395,7 +395,7 @@ void admincapabilities(struct hospitalEmployee *a, struct users *a1, int *sizeEm
 }
 int main()
 {
-    int role, sizeUsers=3, n, sizeEmployee=1, n1, stopmain=0, userNum=-1;
+    int role, sizeUsers=3, n, sizeEmployee=1, n1, stopmain=0, userNum=0;
     struct users a1[10]={"admin", "admin", 1, "user", "user", 2, "test", "test", 1};
     struct hospitalEmployee a[15]={"Kostroma", "Matvey", "Olegovich", 2018, 11, 5, 8.54};
     while (stopmain==0)
@@ -403,17 +403,17 @@ int main()
         pass(&role, a1, &sizeUsers, &stopmain, &userNum);
         if (role==2) usercapabilities(a, &sizeEmployee);
         if (role==1) admincapabilities(a, a1, &sizeEmployee, &sizeUsers, &userNum);
-        while(role!=-1)
+        while(userNum!=-1)
         {
             printf("1 - Log in\n0 - Close programm\n");
             scanf("%d", &n1);
             switch (n1)
             {
             case 1:
-                role=-1;
+                userNum=-1;
                 break;
             case 0:
-                role=-1;
+                userNum=-1;
                 stopmain=1;
                 break;
             default:
