@@ -46,12 +46,12 @@ void pass(int *role, struct users *a1, int *sizeUsers, int *stopmain, int *userN
                 if ((a1+i)->role==1)
                 {
                     *role=1;
-                    printf("Enter succesful! You have entered as an admin\n");
+                    printf("Enter succesful! Hello %s\n", (a1+i)->login);
                 }
                 else
                 {
                     *role=2;
-                    printf("Enter succesful! You have entered as a user\n");
+                    printf("Enter succesful! Hello %s\n", (a1+i)->login);
                 }
             }
         }
@@ -332,7 +332,7 @@ void usercapabilities(struct hospitalEmployee *a, int *sizeEmployee)
     int stop=0, n;
     while (stop==0)
     {
-        printf("1 - Display information about hospital employees\n0 - Exit\n");
+        printf("1 - Display information about hospital employees\n0 - Log out\n");
         scanf("%d", &n);
         switch(n)
         {
@@ -396,7 +396,7 @@ void admincapabilities(struct hospitalEmployee *a, struct users *a1, int *sizeEm
 int main()
 {
     int role, sizeUsers=3, n, sizeEmployee=1, n1, stopmain=0, userNum=0;
-    struct users a1[10]={"admin", "admin", 1, "user", "user", 2, "test", "test", 1};
+    struct users a1[10]={"admin", "admin", 1, "user", "user", 2, "DooNeGo", "DooNeGo", 1};
     struct hospitalEmployee a[15]={"Kostroma", "Matvey", "Olegovich", 2018, 11, 5, 8.54};
     while (stopmain==0)
     {
