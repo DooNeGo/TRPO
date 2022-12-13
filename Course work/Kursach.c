@@ -249,7 +249,7 @@ void editUsers(struct users *a1, int *size, int *userNum)
         scanf("%d", &n);
         if ((n<0) || (n>*size)) printf("\nWrong number, please try again\n");
         else if (n==0) stop=1;
-        else if (n==(*userNum)+1)
+        else if (n==*userNum+1)
         {
             printf("You can't edit an active user!!!\n");
             system("pause");
@@ -321,6 +321,7 @@ void deleteUser(struct users *a1, int *sizeUsers, int *userNum)
                 (a1+i)->role=(a1+i+1)->role;
             }
             (*sizeUsers)--;
+            if (*userNum+1>n) (*userNum)--;
             printf("Delete user successfully\n");
             system("pause");
         }
@@ -395,8 +396,8 @@ void admincapabilities(struct hospitalEmployee *a, struct users *a1, int *sizeEm
 int main()
 {
     int role, sizeUsers=3, n, sizeEmployee=1, n1, stopmain=0, userNum=-1;
-    struct users a1[5]={"admin", "admin", 1, "user", "user", 2, "test", "test", 2};
-    struct hospitalEmployee a[10]={"Kostroma", "Matvey", "Olegovich", 2018, 11, 5, 8.54};
+    struct users a1[10]={"admin", "admin", 1, "user", "user", 2, "test", "test", 1};
+    struct hospitalEmployee a[15]={"Kostroma", "Matvey", "Olegovich", 2018, 11, 5, 8.54};
     while (stopmain==0)
     {
         pass(&role, a1, &sizeUsers, &stopmain, &userNum);
