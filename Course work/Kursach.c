@@ -324,7 +324,7 @@ void editUsers(struct users *a1, int *size, int *userNum)
 }
 void deleteUser(struct users *a1, int *sizeUsers, int *userNum)
 {
-    int stop = 0, n, i, k;
+    int stop = 0, n, i;
     while (stop == 0)
     {
         outputUsers(a1, sizeUsers);
@@ -429,7 +429,7 @@ void admincapabilities(struct hospitalEmployee *a, struct users *a1, int *sizeEm
 }
 int main()
 {
-    int role, sizeUsers = 3, n, sizeEmployee = 1, n1, stopmain = 0, userNum = 0;
+    int role, sizeUsers = 3, n, sizeEmployee = 1, stopmain = 0, userNum = 0;
     struct users a1[10] = {"admin", "admin", 1, "user", "user", 2, "DooNeGo", "DooNeGo", 1};
     struct hospitalEmployee a[15] = {"Kostroma", "Matvey", "Olegovich", 2018, 11, 5, 8.54};
     while (stopmain == 0)
@@ -442,8 +442,8 @@ int main()
         while (userNum != -1)
         {
             printf("1 - Log in\n0 - Close program\n");
-            scanf("%d", &n1);
-            switch (n1)
+            scanf("%d", &n);
+            switch (n)
             {
             case 1:
                 userNum = -1;
