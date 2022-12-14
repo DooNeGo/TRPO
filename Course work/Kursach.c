@@ -10,13 +10,13 @@ struct hospitalEmployee
     int months;
     int days;
     float paymentinOneDay;
-}a[100];
+} a[100];
 struct users
 {
     char login[30];
     char password[30];
     int role;
-}a1[50];
+} a1[50];
 int sizeUsers = 0, sizeEmployee = 0, userNum = 0;
 void array_nulling(char *array, int *size)
 {
@@ -324,7 +324,7 @@ void outputUsers()
     system("cls");
     fflush(stdin);
     for (int i = 0; i < sizeUsers; i++)
-        printf("%d.Login: %s  Password: %s  Role: %d\n", i + 1, (a1 + i)->login, (a1 + i)->password, (a1 + i)->role);    
+        printf("%d.Login: %s  Password: %s  Role: %d\n", i + 1, (a1 + i)->login, (a1 + i)->password, (a1 + i)->role);
 }
 void addNewHospitalEmployee()
 {
