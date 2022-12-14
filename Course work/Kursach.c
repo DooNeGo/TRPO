@@ -137,7 +137,7 @@ void createAdmin(struct users *a1, int *sizeUsers)
     (*sizeUsers)++;
     strcpy(a1->login, "admin");
     strcpy(a1->password, "admin");
-    a1->role=1;
+    a1->role = 1;
     printf("Admin account was created\n");
     system("pause");
 }
@@ -153,7 +153,7 @@ void outputHospitalEmployees(struct hospitalEmployee *a, int *sizeEmployee)
         }
     }
     else
-        printf("\nThere are no hospital employees in the database\n");
+        printf("There are no hospital employees in the database\n");
 }
 void editHospitalEmployees(struct hospitalEmployee *a, int *sizeEmployee)
 {
@@ -167,7 +167,7 @@ void editHospitalEmployees(struct hospitalEmployee *a, int *sizeEmployee)
             scanf("%d", &n1);
             stop1 = 0;
             if ((n1 < 0) || (n1 > *sizeEmployee))
-                printf("\nWrong number, please try again\n");
+                printf("Wrong number, please try again\n");
             else if (n1 == 0)
                 stop = 1;
             else
@@ -217,13 +217,16 @@ void editHospitalEmployees(struct hospitalEmployee *a, int *sizeEmployee)
                         stop1 = 1;
                         break;
                     default:
-                        printf("\nWrong number, please try again\n");
+                        printf("Wrong number, please try again\n");
                         break;
                     }
                 }
         }
         else
+        {
             stop = 1;
+            system("pause");
+        }
     }
 }
 void deleteHospitalEmployee(struct hospitalEmployee *a, int *sizeEmployee)
@@ -237,7 +240,7 @@ void deleteHospitalEmployee(struct hospitalEmployee *a, int *sizeEmployee)
             printf("Enter the employee's number(0-Exit): ");
             scanf("%d", &n);
             if ((n < 0) || (n > *sizeEmployee))
-                printf("\nWrong number, please try again\n");
+                printf("Wrong number, please try again\n");
             else if (n == 0)
                 stop = 1;
             else if (n == *sizeEmployee)
@@ -263,9 +266,11 @@ void deleteHospitalEmployee(struct hospitalEmployee *a, int *sizeEmployee)
             }
         }
         else
+        {
             stop = 1;
+            system("pause");
+        }
     }
-    system("pause");
 }
 void addNewUser(struct users *a1, int *sizeUsers)
 {
@@ -347,7 +352,7 @@ void editUsers(struct users *a1, int *size, int *userNum)
         printf("\nEnter the user's number(0-Exit): ");
         scanf("%d", &n);
         if ((n < 0) || (n > *size))
-            printf("\nWrong number, please try again\n");
+            printf("Wrong number, please try again\n");
         else if (n == 0)
             stop = 1;
         else if (n == *userNum)
@@ -390,7 +395,7 @@ void editUsers(struct users *a1, int *size, int *userNum)
                         if ((a1 + n - 1)->role == 1 || (a1 + n - 1)->role == 2)
                             stop2 = 1;
                         else
-                            printf("\nWrong number, please try again\n");
+                            printf("Wrong number, please try again\n");
                     }
                     printf("Role has been changed\n");
                     system("pause");
@@ -401,7 +406,7 @@ void editUsers(struct users *a1, int *size, int *userNum)
                 default:
                     system("cls");
                     fflush(stdin);
-                    printf("\nWrong number, please try again\n");
+                    printf("Wrong number, please try again\n");
                     system("pause");
                     break;
                 }
@@ -419,7 +424,7 @@ void deleteUser(struct users *a1, int *sizeUsers, int *userNum)
         printf("Enter the user's number(0-Exit): ");
         scanf("%d", &n);
         if ((n < 0) || (n > *sizeUsers))
-            printf("\nWrong number, please try again\n");
+            printf("Wrong number, please try again\n");
         else if (n == 0)
             stop = 1;
         else if (n == *userNum)
@@ -446,6 +451,33 @@ void deleteUser(struct users *a1, int *sizeUsers, int *userNum)
                 (*userNum)--;
             printf("Delete user successfully\n");
             system("pause");
+        }
+    }
+}
+void logInAgain(int *userNum, int *stopmain)
+{
+    int n;
+    while (*userNum != -1)
+    {
+        system("cls");
+        fflush(stdin);
+        printf("1 - Log in\n0 - Close program\n");
+        scanf("%d", &n);
+        switch (n)
+        {
+        case 1:
+            *userNum = -1;
+            break;
+        case 0:
+            *userNum = -1;
+            *stopmain = 1;
+            break;
+        default:
+            system("cls");
+            fflush(stdin);
+            printf("Wrong number, please try again\n");
+            system("pause");
+            break;
         }
     }
 }
@@ -521,7 +553,7 @@ void admincapabilities(struct hospitalEmployee *a, struct users *a1, int *sizeEm
 }
 int main()
 {
-    int role, sizeUsers = 0, n, sizeEmployee = 0, stopmain = 0, userNum = 0;
+    int role, sizeUsers = 0, sizeEmployee = 0, stopmain = 0, userNum = 0;
     struct users a1[50];
     struct hospitalEmployee a[100];
     load(&sizeUsers, &sizeEmployee, a1, a);
@@ -534,31 +566,9 @@ int main()
         pass(&role, a1, &sizeUsers, &stopmain, &userNum);
         if (role == 2)
             usercapabilities(a, &sizeEmployee);
-        if (role == 1)
+        else
             admincapabilities(a, a1, &sizeEmployee, &sizeUsers, &userNum);
-        while (userNum != -1)
-        {
-            system("cls");
-            fflush(stdin);
-            printf("1 - Log in\n0 - Close program\n");
-            scanf("%d", &n);
-            switch (n)
-            {
-            case 1:
-                userNum = -1;
-                break;
-            case 0:
-                userNum = -1;
-                stopmain = 1;
-                break;
-            default:
-                system("cls");
-                fflush(stdin);
-                printf("Wrong number, please try again\n");
-                system("pause");
-                break;
-            }
-        }
+        logInAgain(&userNum, &stopmain);
     }
     save(a1, a, &sizeUsers, &sizeEmployee);
     return 0;
