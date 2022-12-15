@@ -149,7 +149,7 @@ void outputHospitalEmployees()
     {
         printf("A list of hospital employees:\n");
         for (int i = 0; i < sizeEmployee; i++)
-            printf("%d.|FIO: %2s %2s %2s | Year: %2d | Month: %2d | Number of days: %2d | Payment in one day: %2.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+            printf("%d.|FIO: %2s %2s %2s | Year: %2d | Month: %2d | Number of days of absence due to illness: %2d | Payment in one day: %2.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
     }
     else
         printf("There are no hospital employees in the database\n");
@@ -334,9 +334,9 @@ void addNewHospitalEmployee()
     fflush(stdin);
     printf("Enter FIO: ");
     scanf("%s %s %s", &(a + sizeEmployee)->surname, &(a + sizeEmployee)->name, &(a + sizeEmployee)->patronymic);
-    printf("Enter number of years of absence due to illness: ");
+    printf("Enter year: ");
     scanf("%d", &((a + sizeEmployee)->years));
-    printf("Enter number of months of absence due to illness: ");
+    printf("Enter month: ");
     scanf("%d", &((a + sizeEmployee)->months));
     printf("Enter number of days of absence due to illness: ");
     scanf("%d", &((a + sizeEmployee)->days));
@@ -346,7 +346,7 @@ void addNewHospitalEmployee()
     sizeEmployee++;
     system("pause");
 }
-void editUsers(int *stopAdmin, int *stopAdmin1)
+void editUsers(int *stopAdmin, int *stopUserList)
 {
     int stop = 0, n, stop1 = 0, n1, stop2 = 0;
     while (stop == 0)
@@ -415,7 +415,7 @@ void editUsers(int *stopAdmin, int *stopAdmin1)
             stop = 1;
             stop1 = 1;
             *stopAdmin = 1;
-            *stopAdmin1 = 1;
+            *stopUserList = 1;
             system("pause");
         }
     }
@@ -461,6 +461,44 @@ void deleteUser()
         }
     }
 }
+void outputAlistOfPayments()
+{
+    int year, month, i, monthPayment;
+    system("cls");
+    fflush(stdin);
+    printf("Enter year(Example - 2022): ");
+    scanf("%d", &year);
+    printf("Enter month(Exmple - 7): ");
+    scanf("%d", &month);
+    for (i = 0; i < sizeEmployee; i++)
+    {
+        if ((a + i)->years == year && (a + i)->months == month)
+        {
+            monthPayment = (30 - (a + i)->days) * (a + i)->paymentinOneDay;
+            printf("%d. FIO: %s %s %s  Payment: %d\n", i + 1, a[i].surname, a[i].name, a[i].patronymic, monthPayment);
+        }
+    }
+    system("pause");
+}
+void outputTotalAmountofPayments()
+{
+    int year, month, i, totalMonthPayment = 0;
+    system("cls");
+    fflush(stdin);
+    printf("Enter year(Example - 2022): ");
+    scanf("%d", &year);
+    printf("Enter month(Exmple - 7): ");
+    scanf("%d", &month);
+    for (i = 0; i < sizeEmployee; i++)
+    {
+        if ((a + i)->years == year && (a + i)->months == month)
+        {
+            totalMonthPayment = totalMonthPayment + (30 - (a + i)->days) * (a + i)->paymentinOneDay;
+        }
+    }
+    printf("Total payment: %d\n", totalMonthPayment);
+    system("pause");
+}
 void logInAgain(int *stopmain)
 {
     int n;
@@ -482,6 +520,80 @@ void logInAgain(int *stopmain)
         default:
             system("cls");
             fflush(stdin);
+            printf("Wrong number, please try again\n");
+            system("pause");
+            break;
+        }
+    }
+}
+void userList(int *stopAdmin)
+{
+    int stop = 0, n;
+    while (stop == 0)
+    {
+        system("cls");
+        fflush(stdin);
+        printf("1 - Add user\n2 - Edit user\n3 - Delete user\n4 - Display users\n0 - Exit\n");
+        scanf("%d", &n);
+        switch (n)
+        {
+        case 1:
+            addNewUser();
+            break;
+        case 2:
+            editUsers(stopAdmin, &stop);
+            break;
+        case 3:
+            deleteUser();
+            break;
+        case 4:
+            outputUsers();
+            system("pause");
+            break;
+        case 0:
+            stop = 1;
+            break;
+        default:
+            printf("Wrong number, please try again\n");
+            system("pause");
+            break;
+        }
+    }
+}
+void employeeList()
+{
+    int stop = 0, n;
+    while (stop == 0)
+    {
+        system("cls");
+        fflush(stdin);
+        printf("1 - Add hospital employee\n2 - Edit hospital employee\n3 - Delete hospital employee\n4 - Display hospital employees\n5 - Display a list of payments to hospital employees\n6 - Display the total amount of payments to hospital employees\n0 - Exit\n");
+        scanf("%d", &n);
+        switch (n)
+        {
+        case 1:
+            addNewHospitalEmployee();
+            break;
+        case 2:
+            editHospitalEmployees();
+            break;
+        case 3:
+            deleteHospitalEmployee();
+            break;
+        case 4:
+            outputHospitalEmployees();
+            system("pause");
+            break;
+        case 5:
+            outputAlistOfPayments();
+            break;
+        case 6:
+            outputTotalAmountofPayments();
+            break;
+        case 0:
+            stop = 1;
+            break;
+        default:
             printf("Wrong number, please try again\n");
             system("pause");
             break;
@@ -513,7 +625,7 @@ void usercapabilities()
 }
 void admincapabilities()
 {
-    int stop = 0, n, stop1 = 0;
+    int stop = 0, n;
     while (stop == 0)
     {
         system("cls");
@@ -523,70 +635,10 @@ void admincapabilities()
         switch (n)
         {
         case 1:
-            stop1 = 0;
-            while (stop1 == 0)
-            {
-                system("cls");
-                fflush(stdin);
-                printf("1 - Add user\n2 - Edit user\n3 - Delete user\n4 - Display users\n0 - Exit\n");
-                scanf("%d", &n);
-                switch (n)
-                {
-                case 1:
-                    addNewUser();
-                    break;
-                case 2:
-                    editUsers(&stop, &stop1);
-                    break;
-                case 3:
-                    deleteUser();
-                    break;
-                case 4:
-                    outputUsers();
-                    system("pause");
-                    break;
-                case 0:
-                    stop1 = 1;
-                    break;
-                default:
-                    printf("Wrong number, please try again\n");
-                    system("pause");
-                    break;
-                }
-            }
+            userList(&stop);
             break;
         case 2:
-            stop1 = 0;
-            while (stop1 == 0)
-            {
-                system("cls");
-                fflush(stdin);
-                printf("1 - Add hospital employee\n2 - Edit hospital employee\n3 - Delete hospital employee\n4 - Display hospital employees\n0 - Exit\n");
-                scanf("%d", &n);
-                switch (n)
-                {
-                case 1:
-                    addNewHospitalEmployee();
-                    break;
-                case 2:
-                    editHospitalEmployees();
-                    break;
-                case 3:
-                    deleteHospitalEmployee();
-                    break;
-                case 4:
-                    outputHospitalEmployees();
-                    system("pause");
-                    break;
-                case 0:
-                    stop1 = 1;
-                    break;
-                default:
-                    printf("Wrong number, please try again\n");
-                    system("pause");
-                    break;
-                }
-            }
+            employeeList();
             break;
         case 0:
             stop = 1;
