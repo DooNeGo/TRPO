@@ -415,6 +415,7 @@ void editUsers(int *stopAdmin, int *stopUserList)
             stop1 = 1;
             *stopAdmin = 1;
             *stopUserList = 1;
+            userNum = -1;
             system("pause");
         }
     }
