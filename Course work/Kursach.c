@@ -22,7 +22,7 @@ void array_nulling(char *array, int *size)
 {
     for (int i = 0; i < *size; i++)
     {
-        *(array + i) = 0;
+        *(array + i) = '\000';
     }
 }
 void userVerification(char *login, char *password, int *role)
@@ -44,7 +44,6 @@ void pass(int *role, int *stopmain)
 {
     int n, stop, maxNumofLetters = 30;
     char login[maxNumofLetters], password[maxNumofLetters];
-    userNum = 0;
     while (userNum == 0)
     {
         system("cls");
@@ -77,7 +76,7 @@ void pass(int *role, int *stopmain)
                 stop = 1;
                 break;
             case 2:
-                userNum = -1;
+                userNum = -2;
                 *stopmain = 1;
                 break;
             default:
@@ -89,7 +88,7 @@ void pass(int *role, int *stopmain)
             }
         }
     }
-    if (userNum != -1)
+    if (userNum != -2)
         system("pause");
 }
 void load()
@@ -502,7 +501,7 @@ void outputTotalAmountofPayments()
 void logInAgain(int *stopmain)
 {
     int n;
-    while (userNum != -1)
+    while (userNum == -1)
     {
         system("cls");
         fflush(stdin);
@@ -511,10 +510,10 @@ void logInAgain(int *stopmain)
         switch (n)
         {
         case 1:
-            userNum = -1;
+            userNum = 0;
             break;
         case 0:
-            userNum = -1;
+            userNum = -2;
             *stopmain = 1;
             break;
         default:
@@ -616,6 +615,7 @@ void usercapabilities()
             break;
         case 0:
             stop = 1;
+            userNum = 0;
             break;
         default:
             printf("Wrong number, please try again\n");
@@ -642,6 +642,7 @@ void admincapabilities()
             break;
         case 0:
             stop = 1;
+            userNum = -1;
             break;
         default:
             printf("Wrong number, please try again\n");
@@ -663,7 +664,7 @@ int main()
         pass(&role, &stopmain);
         if (role == 2)
             usercapabilities();
-        else
+        else if (role == 1)
             admincapabilities();
         logInAgain(&stopmain);
     }
