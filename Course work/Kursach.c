@@ -32,10 +32,7 @@ void userVerification(char *login, char *password, int *role)
         if (strcmp(a1[i].login, login) == 0 && strcmp(a1[i].password, password) == 0)
         {
             userNum = i + 1;
-            if (a1[i].role == 1)
-                *role = 1;
-            else
-                *role = 2;
+            *role=a1[i].role;
             printf("Enter successful! Hello %s\n", a1[i].login);
         }
     }
@@ -91,7 +88,16 @@ void pass(int *role, int *stopmain)
     if (userNum != -2)
         system("pause");
 }
-void load()
+void createAdmin()
+{
+    sizeUsers++;
+    strcpy(a1[0].login, "admin");
+    strcpy(a1[0].password, "admin");
+    a1[0].role = 1;
+    printf("Admin account was created\nLogin: admin\nPassword: admin\n");
+    system("pause");
+}
+int load()
 {
     FILE *file = fopen("database.dat", "rb");
     if (file)
@@ -100,7 +106,9 @@ void load()
         fread(&sizeEmployee, sizeof(int), 1, file);
         if (sizeUsers > 50 || sizeEmployee > 100)
         {
-            printf("ERROR file");
+            printf("The database is damaged\n");
+            system("pause");
+            return 1;
         }
         else
         {
@@ -115,6 +123,9 @@ void load()
         }
         fclose(file);
     }
+    else
+        createAdmin();
+    return 0;
 }
 void save()
 {
@@ -130,15 +141,6 @@ void save()
         fwrite(a, sizeof(struct hospitalEmployee), sizeEmployee, file);
     }
     fclose(file);
-}
-void createAdmin()
-{
-    sizeUsers++;
-    strcpy(a1[0].login, "admin");
-    strcpy(a1[0].password, "admin");
-    a1[0].role = 1;
-    printf("Admin account was created\n");
-    system("pause");
 }
 void outputHospitalEmployees()
 {
@@ -655,20 +657,20 @@ void admincapabilities()
 int main()
 {
     int role, stopmain = 0;
-    load();
-    if (sizeUsers == 0)
-        createAdmin();
-    while (stopmain == 0)
+    if (load() == 0)
     {
-        system("cls");
-        fflush(stdin);
-        pass(&role, &stopmain);
-        if (role == 2)
-            usercapabilities();
-        else if (role == 1)
-            admincapabilities();
-        logInAgain(&stopmain);
+        while (stopmain == 0)
+        {
+            system("cls");
+            fflush(stdin);
+            pass(&role, &stopmain);
+            if (role == 2)
+                usercapabilities();
+            else if (role == 1)
+                admincapabilities();
+            logInAgain(&stopmain);
+        }
+        save();
     }
-    save();
     return 0;
 }
