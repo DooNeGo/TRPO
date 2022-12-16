@@ -9,323 +9,778 @@ struct hospitalEmployee
     int years;
     int months;
     int days;
-    float paymentinOneDay;                                                                                                                                                        
-};
+    float paymentinOneDay;
+} a[100];
 struct users
 {
     char login[30];
     char password[30];
     int role;
-};
+} a1[50];
+int sizeUsers = 0, sizeEmployee = 0, userNum = 0;
 void array_nulling(char *array, int *size)
 {
-    for (int i=0; i<*size; i++)
+    for (int i = 0; i < *size; i++)
     {
-        *(array+i)=0;
+        *(array + i) = '\000';
     }
 }
-void pass(int *k, struct users *a1, int *size, int *stopmain)
+void logInAgain(int *stopmain)
 {
-    int n, stop, maxNumofLetters=30;
-    char login[maxNumofLetters], password[maxNumofLetters];
-    *k=0;
-    while (*k==0)
+    int n, stop = 0;
+    while (stop == 0)
     {
-        stop=0;
+        system("cls");
+        fflush(stdin);
+        printf("1 - Log in again\n0 - Close program\n");
+        scanf("%d", &n);
+        switch (n)
+        {
+        case 1:
+            userNum = 0;
+            stop = 1;
+            break;
+        case 0:
+            userNum = -1;
+            stop = 1;
+            *stopmain = 1;
+            break;
+        default:
+            system("cls");
+            fflush(stdin);
+            printf("Wrong number, please try again\n");
+            system("pause");
+            break;
+        }
+    }
+}
+void userVerification(char *login, char *password, int *role)
+{
+    for (int i = 0; i < sizeUsers; i++)
+    {
+        if (strcmp(a1[i].login, login) == 0 && strcmp(a1[i].password, password) == 0)
+        {
+            userNum = i + 1;
+            *role = a1[i].role;
+            printf("Enter successful! Hello %s\n", a1[i].login);
+        }
+    }
+}
+void pass(int *role, int *stopmain)
+{
+    int n, stop, maxNumofLetters = 30;
+    char login[maxNumofLetters], password[maxNumofLetters];
+    while (userNum == 0)
+    {
+        system("cls");
+        fflush(stdin);
+        stop = 0;
+        *role = 0;
         array_nulling(login, &maxNumofLetters);
         array_nulling(password, &maxNumofLetters);
         printf("Login: ");
         scanf("%s", &login);
         printf("Password: ");
         scanf("%s", &password);
-        for (int i=0; i<*size; i++)
+        userVerification(login, password, role);
+        if (userNum == 0)
         {
-            if (memcmp((a1+i)->login, login, maxNumofLetters)==0 && memcmp((a1+i)->password, password, maxNumofLetters)==0)
+            system("cls");
+            fflush(stdin);
+            printf("Wrong login or password\n");
+            system("pause");
+            logInAgain(stopmain);
+        }
+    }
+    if (userNum != -1)
+        system("pause");
+}
+void createAdmin()
+{
+    sizeUsers++;
+    strcpy(a1[0].login, "admin");
+    strcpy(a1[0].password, "admin");
+    a1[0].role = 1;
+    printf("Admin account was created\nLogin: admin\nPassword: admin\n");
+    system("pause");
+}
+int load()
+{
+    FILE *file = fopen("database.dat", "rb");
+    if (file)
+    {
+        fread(&sizeUsers, sizeof(int), 1, file);
+        fread(&sizeEmployee, sizeof(int), 1, file);
+        if (sizeUsers > 50 || sizeEmployee > 100)
+        {
+            printf("The database is damaged\n");
+            system("pause");
+            return 1;
+        }
+        else
+        {
+            if (sizeUsers > 0)
             {
-                if ((a1+i)->role==1)
+                fread(a1, sizeof(struct users), sizeUsers, file);
+            }
+            if (sizeEmployee > 0)
+            {
+                fread(a, sizeof(struct hospitalEmployee), sizeEmployee, file);
+            }
+        }
+        fclose(file);
+    }
+    else
+        createAdmin();
+    return 0;
+}
+void save()
+{
+    FILE *file = fopen("database.dat", "wb");
+    fwrite(&sizeUsers, sizeof(int), 1, file);
+    fwrite(&sizeEmployee, sizeof(int), 1, file);
+    if (sizeUsers > 0)
+    {
+        fwrite(a1, sizeof(struct users), sizeUsers, file);
+    }
+    if (sizeEmployee > 0)
+    {
+        fwrite(a, sizeof(struct hospitalEmployee), sizeEmployee, file);
+    }
+    fclose(file);
+}
+void outputHospitalEmployees()
+{
+    system("cls");
+    fflush(stdin);
+    if (sizeEmployee > 0)
+    {
+        printf("A list of hospital employees:\n");
+        for (int i = 0; i < sizeEmployee; i++)
+            printf("%d.|FIO: %2s %2s %2s | Year: %2d | Month: %2d | Number of days of absence due to illness: %2d | Payment in one day: %2.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+    }
+    else
+        printf("There are no hospital employees in the database\n");
+}
+void editHospitalEmployees()
+{
+    int n, stop = 0, n1, stop1 = 0;
+    while (stop == 0)
+    {
+        outputHospitalEmployees();
+        if (sizeEmployee > 0)
+        {
+            printf("Enter the employee's number(0-Exit): ");
+            scanf("%d", &n1);
+            stop1 = 0;
+            if ((n1 < 0) || (n1 > sizeEmployee))
+                printf("Wrong number, please try again\n");
+            else if (n1 == 0)
+                stop = 1;
+            else
+                while (stop1 == 0)
                 {
-                    *k=1;
-                    printf("Enter succesful! You have entered as an admin\n");
+                    system("cls");
+                    fflush(stdin);
+                    printf("1 - Edit surname\n2 - Edit name\n3 - Edit patronymic\n4 - Edit Number of years of absence due to illness");
+                    printf("\n5 - Edit number of month of absence due to illness\n6 - Edit number of days of absence due to illness\n7 - Edit payment in one day\n0 - Exit\n");
+                    scanf("%d", &n);
+                    switch (n)
+                    {
+                    case 1:
+                        printf("\nEnter new surname: ");
+                        scanf("%s", &(a + n1 - 1)->surname);
+                        printf("Surname has been changed\n");
+                        break;
+                    case 2:
+                        printf("\nEnter new name: ");
+                        scanf("%s", &(a + n1 - 1)->name);
+                        printf("Name has been changed\n");
+                        break;
+                    case 3:
+                        printf("\nEnter new patronymic: ");
+                        scanf("%s", &(a + n1 - 1)->patronymic);
+                        printf("Patronymic has been changed\n");
+                        break;
+                    case 4:
+                        printf("\nEnter new number of years of absence due to illness: ");
+                        scanf("%d", &(a + n1 - 1)->years);
+                        printf("Number of years of absence due to illness has been changed\n");
+                        break;
+                    case 5:
+                        printf("\nEnter new number of months of absence due to illness: ");
+                        scanf("%d", &(a + n1 - 1)->months);
+                        printf("Number of months of absence due to illness has been changed\n");
+                        break;
+                    case 6:
+                        printf("\nEnter new number of days of absence due to illness: ");
+                        scanf("%d", &(a + n1 - 1)->days);
+                        printf("Number of days of absence due to illness has been changed\n");
+                        break;
+                    case 7:
+                        printf("\nEnter new payment in one day: ");
+                        scanf("%f", &(a + n1 - 1)->paymentinOneDay);
+                        printf("Payment in one day has been changed\n");
+                        break;
+                    case 0:
+                        stop1 = 1;
+                        break;
+                    default:
+                        printf("Wrong number, please try again\n");
+                        break;
+                    }
+                }
+        }
+        else
+        {
+            stop = 1;
+            system("pause");
+        }
+    }
+}
+void deleteHospitalEmployee()
+{
+    int stop = 0, n, i;
+    while (stop == 0)
+    {
+        outputHospitalEmployees();
+        if (sizeEmployee > 0)
+        {
+            printf("Enter the employee's number(0-Exit): ");
+            scanf("%d", &n);
+            if ((n < 0) || (n > sizeEmployee))
+                printf("Wrong number, please try again\n");
+            else if (n == 0)
+                stop = 1;
+            else if (n == sizeEmployee)
+            {
+                printf("Delete hospital employee successfully\n");
+                sizeEmployee--;
+                system("pause");
+            }
+            else
+            {
+                for (i = n - 1; i < sizeEmployee - 1; i++)
+                {
+                    strcpy((a + i)->surname, (a + i + 1)->surname);
+                    strcpy((a + i)->name, (a + i + 1)->name);
+                    strcpy((a + i)->patronymic, (a + i + 1)->patronymic);
+                    (a + i)->years = (a + i + 1)->years;
+                    (a + i)->months = (a + i + 1)->months;
+                    (a + i)->days = (a + i + 1)->days;
+                    (a + i)->paymentinOneDay = (a + i + 1)->paymentinOneDay;
+                }
+                sizeEmployee--;
+                printf("Delete hospital employee successfully\n");
+            }
+        }
+        else
+        {
+            stop = 1;
+            system("pause");
+        }
+    }
+}
+void addNewUser()
+{
+    int i, stop = 0;
+    while (stop == 0)
+    {
+        system("cls");
+        fflush(stdin);
+        stop = 1;
+        printf("Enter Login (Q(q)-Exit): ");
+        scanf("%s", &((a1 + sizeUsers)->login));
+        if (memcmp((a1 + sizeUsers)->login, "Q", 2) == 0 || memcmp((a1 + sizeUsers)->login, "q", 2) == 0)
+            stop = 2;
+        else
+            for (i = 0; i < sizeUsers; i++)
+            {
+                if (strcmp((a1 + sizeUsers)->login, (a1 + i)->login) == 0)
+                {
+                    printf("This login already exists\n");
+                    stop = 0;
+                    system("pause");
                     break;
                 }
-                else *k=2;
-                printf("Enter succesful! You have entered as a user\n");
-                break;
             }
-        }
-        if (*k==0) printf("\nWrong login or password\n");
-        while ((*k==0) && stop!=1)
+    }
+    if (stop == 1)
+    {
+        printf("Enter Password: ");
+        scanf("%s", &((a1 + sizeUsers)->password));
+        while (stop == 1)
         {
-            printf("1 - Try log in again\n2 - Close program\n");
-            scanf("%d", &n);
-            switch(n)
+            printf("Enter Role(1-admin or 2-user): ");
+            scanf("%d", &((a1 + sizeUsers)->role));
+            if ((a1 + sizeUsers)->role == 1 || (a1 + sizeUsers)->role == 2)
             {
-                case 1:
-                    stop=1;
-                    break;
-                case 2:
-                    *k=-1;
-                    *stopmain=1;
-                    break;
-                default:
-                    printf("\nWrong number, please try again\n");
+                printf("New user was added\n");
+                sizeUsers++;
+                stop = 0;
+                system("pause");
+            }
+            else
+            {
+                printf("Wrong number of role, please try again\n");
+                system("pause");
             }
         }
     }
-    if (*k!=-1) system("pause");
 }
-void outputInformationAboutHospitalEmployees(struct hospitalEmployee *a, int *size)
+void outputUsers()
 {
-    for (int i=0; i<*size; i++)
-    {
-        printf("%d.|FIO: %2s %2s %2s | Year: %2d | Month: %2d | Number of days: %2d | Payment in one day: %2.3f|\n", i+1, (a+i)->surname, (a+i)->name, (a+i)->patronymic, (a+i)->years, (a+i)->months, (a+i)->days, (a+i)->paymentinOneDay);
-    }
+    system("cls");
+    fflush(stdin);
+    printf("A list of users:\n");
+    for (int i = 0; i < sizeUsers; i++)
+        printf("%d.Login: %s  Password: %s  Role: %d\n", i + 1, (a1 + i)->login, (a1 + i)->password, (a1 + i)->role);
 }
-void editInformationAboutHospitalEmployees(struct hospitalEmployee *a, int *size)
+void addNewHospitalEmployee()
 {
-    int n, stop=0, n1, stop1=0;
-    while (stop==0)
+    system("cls");
+    fflush(stdin);
+    printf("Enter FIO: ");
+    scanf("%s %s %s", &(a + sizeEmployee)->surname, &(a + sizeEmployee)->name, &(a + sizeEmployee)->patronymic);
+    printf("Enter year: ");
+    scanf("%d", &((a + sizeEmployee)->years));
+    printf("Enter month: ");
+    scanf("%d", &((a + sizeEmployee)->months));
+    printf("Enter number of days of absence due to illness: ");
+    scanf("%d", &((a + sizeEmployee)->days));
+    printf("Enter payment in one day: ");
+    scanf("%f", &((a + sizeEmployee)->paymentinOneDay));
+    printf("New hospital employee was added\n");
+    sizeEmployee++;
+    system("pause");
+}
+void editUsers(int *stopAdmin, int *stopUserList)
+{
+    int stop = 0, n, stop1 = 0, n1, stop2 = 0;
+    while (stop == 0)
     {
-        printf("Enter the employee's number(0-Exit): ");
-        scanf("%d", &n1);
-        stop1=0;
-        if ((n1<0) || (n1>*size))
-        {
-            printf("\nWrong number, please try again\n");
-        }
-        else if (n1==0)
-        {
-                stop=1;     
-        }
-        else while (stop1==0)
-        {
-            printf("\n1 - Edit surname\n2 - Edit name\n3 - Edit patronymic\n4 - Edit Number of years of absence due to illness");
-            printf("\n5 - Edit number of month of absence due to illness\n6 - Edit number of days of absence due to illness\n7 - Edit payment in one day\n0 - Exit\n");
-            scanf("%d", &n);
-            switch (n)
+        outputUsers();
+        printf("Enter the user's number for edit(0-Exit): ");
+        scanf("%d", &n);
+        if ((n < 0) || (n > sizeUsers))
+            printf("Wrong number, please try again\n");
+        else if (n == 0)
+            stop = 1;
+        else
+            while (stop1 == 0)
             {
+                system("cls");
+                fflush(stdin);
+                printf("1 - Edit login\n2 - Edit password\n3 - Edit role\n0 - Exit\n");
+                scanf("%d", &n1);
+                switch (n1)
+                {
                 case 1:
-                    printf("\nEnter new surname: ");
-                    scanf("%s", &(a+n1-1)->surname);
+                    system("cls");
+                    fflush(stdin);
+                    printf("Enter new login: ");
+                    scanf("%s", &(a1 + n - 1)->login);
+                    printf("Login has been changed\n");
+                    system("pause");
                     break;
                 case 2:
-                    printf("\nEnter new name: ");
-                    scanf("%s", &(a+n1-1)->name);
+                    system("cls");
+                    fflush(stdin);
+                    printf("Enter new password: ");
+                    scanf("%s", &(a1 + n - 1)->password);
+                    printf("Password has been changed\n");
+                    system("pause");
                     break;
                 case 3:
-                    printf("\nEnter new patronymic: ");
-                    scanf("%s", &(a+n1-1)->patronymic);
-                    break;
-                case 4:
-                    printf("\nEnter new number of years of absence due to illness: ");
-                    scanf("%d", &(a+n1-1)->years);
-                    break;
-                case 5:
-                    printf("\nEnter new number of months of absence due to illness: ");
-                    scanf("%d", &(a+n1-1)->months);
-                    break;
-                case 6:
-                    printf("\nEnter new number of days of absence due to illness: ");
-                    scanf("%d", &(a+n1-1)->days);
-                    break;
-                case 7:
-                    printf("\nEnter new payment in one day: ");
-                    scanf("%f", &(a+n1-1)->paymentinOneDay);
+                    while (stop2 == 0)
+                    {
+                        system("cls");
+                        fflush(stdin);
+                        printf("Enter new role(1-admin or 2-user): ");
+                        scanf("%d", &(a1 + n - 1)->role);
+                        if ((a1 + n - 1)->role == 1 || (a1 + n - 1)->role == 2)
+                            stop2 = 1;
+                        else
+                            printf("Wrong number, please try again\n");
+                    }
+                    printf("Role has been changed\n");
+                    system("pause");
                     break;
                 case 0:
-                    stop1=1;
+                    stop1 = 1;
                     break;
                 default:
-                    printf("\nWrong number, please try again\n");
+                    system("cls");
+                    fflush(stdin);
+                    printf("Wrong number, please try again\n");
+                    system("pause");
                     break;
+                }
+            }
+        if (n == userNum)
+        {
+            printf("You have changed the current user, please re-login\n");
+            stop = 1;
+            stop1 = 1;
+            *stopAdmin = 1;
+            *stopUserList = 1;
+            userNum = -1;
+            system("pause");
+        }
+    }
+}
+void deleteUser()
+{
+    int stop = 0, n, i;
+    while (stop == 0)
+    {
+        system("cls");
+        fflush(stdin);
+        outputUsers();
+        printf("Enter the user's number(0-Exit): ");
+        scanf("%d", &n);
+        if ((n < 0) || (n > sizeUsers))
+            printf("Wrong number, please try again\n");
+        else if (n == 0)
+            stop = 1;
+        else if (n == userNum)
+        {
+            printf("You can't delete an active user!!!\n");
+            system("pause");
+        }
+        else if (n == sizeUsers)
+        {
+            printf("Delete user successfully\n");
+            sizeUsers--;
+            system("pause");
+        }
+        else
+        {
+            for (i = n - 1; i < sizeUsers - 1; i++)
+            {
+                strcpy((a1 + i)->login, (a1 + i + 1)->login);
+                strcpy((a1 + i)->password, (a1 + i + 1)->password);
+                (a1 + i)->role = (a1 + i + 1)->role;
+            }
+            sizeUsers--;
+            if (userNum > n)
+                userNum--;
+            printf("Delete user successfully\n");
+            system("pause");
+        }
+    }
+}
+void outputAlistOfPayments()
+{
+    int year, month, i, monthPayment;
+    system("cls");
+    fflush(stdin);
+    printf("Enter year(Example - 2022): ");
+    scanf("%d", &year);
+    printf("Enter month(Exmple - 7): ");
+    scanf("%d", &month);
+    for (i = 0; i < sizeEmployee; i++)
+    {
+        if ((a + i)->years == year && (a + i)->months == month)
+        {
+            monthPayment = (30 - (a + i)->days) * (a + i)->paymentinOneDay;
+            printf("%d. FIO: %s %s %s  Payment: %d\n", i + 1, a[i].surname, a[i].name, a[i].patronymic, monthPayment);
+        }
+    }
+    system("pause");
+}
+void outputTotalAmountofPayments()
+{
+    int year, month, i, totalMonthPayment = 0;
+    system("cls");
+    fflush(stdin);
+    printf("Enter year(Example - 2022): ");
+    scanf("%d", &year);
+    printf("Enter month(Exmple - 7): ");
+    scanf("%d", &month);
+    for (i = 0; i < sizeEmployee; i++)
+    {
+        if ((a + i)->years == year && (a + i)->months == month)
+        {
+            totalMonthPayment = totalMonthPayment + (30 - (a + i)->days) * (a + i)->paymentinOneDay;
+        }
+    }
+    printf("Total payment: %d\n", totalMonthPayment);
+    system("pause");
+}
+void searchEngine(char *value)
+{
+    float enteredNum;
+    int enteredNum1;
+    char enteredValue;
+    system("cls");
+    if (sizeEmployee == 0)
+        printf("There are no hospital employees in the database\n");
+    else
+    {
+        printf("Enter %s for search: ", *value);
+        if (strcmp(value, "surname") == 0)
+        {
+            scanf("%s", &enteredValue);
+            for (int i = 0; i < sizeEmployee; i++)
+            {
+                if (strcmp(a[i].surname, &enteredValue) == 0)
+                    printf("%d.|FIO: %2s %2s %2s | Year: %2d | Month: %2d | Number of days of absence due to illness: %2d | Payment in one day: %2.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+            }
+        }
+        else if (strcmp(value, "name") == 0)
+        {
+            scanf("%s", &enteredValue);
+            for (int i = 0; i < sizeEmployee; i++)
+            {
+                if (strcmp(a[i].name, &enteredValue) == 0)
+                    printf("%d.|FIO: %2s %2s %2s | Year: %2d | Month: %2d | Number of days of absence due to illness: %2d | Payment in one day: %2.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+            }
+        }
+        else if (strcmp(value, "patronymic") == 0)
+        {
+            scanf("%s", &enteredValue);
+            for (int i = 0; i < sizeEmployee; i++)
+            {
+                if (strcmp(a[i].patronymic, &enteredValue) == 0)
+                    printf("%d.|FIO: %2s %2s %2s | Year: %2d | Month: %2d | Number of days of absence due to illness: %2d | Payment in one day: %2.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+            }
+        }
+        else if (strcmp(value, "year") == 0)
+        {
+            scanf("%d", &enteredNum1);
+            for (int i = 0; i < sizeEmployee; i++)
+            {
+                if (a[i].years == enteredNum1)
+                    printf("%d.|FIO: %2s %2s %2s | Year: %2d | Month: %2d | Number of days of absence due to illness: %2d | Payment in one day: %2.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+            }
+        }
+        else if (strcmp(value, "month") == 0)
+        {
+            scanf("%s", &enteredNum1);
+            for (int i = 0; i < sizeEmployee; i++)
+            {
+                if (a[i].months == enteredNum1)
+                    printf("%d.|FIO: %2s %2s %2s | Year: %2d | Month: %2d | Number of days of absence due to illness: %2d | Payment in one day: %2.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+            }
+        }
+        else if (strcmp(value, "days") == 0)
+        {
+            scanf("%s", &enteredNum1);
+            for (int i = 0; i < sizeEmployee; i++)
+            {
+                if (a[i].days == enteredNum1)
+                    printf("%d.|FIO: %2s %2s %2s | Year: %2d | Month: %2d | Number of days of absence due to illness: %2d | Payment in one day: %2.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+            }
+        }
+        else if (strcmp(value, "payment") == 0)
+        {
+            scanf("%s", &enteredNum);
+            for (int i = 0; i < sizeEmployee; i++)
+            {
+                if (a[i].paymentinOneDay == enteredNum)
+                    printf("%d.|FIO: %2s %2s %2s | Year: %2d | Month: %2d | Number of days of absence due to illness: %2d | Payment in one day: %2.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
             }
         }
     }
-}
-void addNewUser(struct users *a1, int *size)
-{
-    printf("Enter Login: ");
-    scanf("%s", &((a1+*size)->login));
-    printf("Enter Password: ");
-    scanf("%s", &((a1+*size)->password));
-    printf("Enter Role(1 or 0): ");
-    scanf("%d", &((a1+*size)->role));
-    printf("New user was added\n");
     system("pause");
 }
-void outputUsers(struct users *a1, int *size)
+void search()
 {
-    for (int i=0; i<*size; i++)
+    int stop = 0, n, i;
+    char enteredValue[20];
+    while (stop == 0)
     {
-        printf("%d.Login: %s  Password: %s  Role: %d\n", i+1, (a1+i)->login, (a1+i)->password, (a1+i)->role);
-    }
-    system("pause");
-}
-void addNewHospitalEmployee(struct hospitalEmployee *a, int *size)
-{
-    printf("Enter FIO: ");
-    scanf("%s %s %s", &(a+*size)->surname, &(a+*size)->name, &(a+*size)->patronymic);
-    printf("Enter number of years of absence due to illness: ");
-    scanf("%d", &((a+*size)->years));
-    printf("Enter number of months of absence due to illness: ");
-    scanf("%d", &((a+*size)->months));
-    printf("Enter number of days of absence due to illness: ");
-    scanf("%d", &((a+*size)->days));
-    printf("Enter payment in one day: ");
-    scanf("%f", &((a+*size)->paymentinOneDay));
-    printf("New hospital employee was added\n");
-    system("pause");
-}
-void usercapabilities(struct hospitalEmployee *a, int *sizeEmployee)
-{
-    int stop=0, n;
-    while (stop==0)
-    {
-        printf("1 - Display information about hospital employees\n0 - Exit\n");
+        system("cls");
+        printf("1 - Search by surname\n2 - Search by name\n3 - Search by patronymic\n4 - Search by year\n5 - Search by month\n6 - Search by number of days of absence due to illness\n7 - Search by payment in one day\n0 - Exit\n");
         scanf("%d", &n);
-        switch(n)
+        switch (n)
         {
-            case 1:
-                outputInformationAboutHospitalEmployees(a, sizeEmployee);
-                system("pause");
-                break;
-            case 0:
-                stop=1;
-                break;
-            default:
-                printf("Wrong number, please try again\n");
-                break;
-        }
-    }     
-}
-void admincapabilities(struct hospitalEmployee *a, struct users *a1, int *sizeEmployee, int *sizeUsers)
-{
-    int stop=0, n;
-    while (stop==0)
-    {
-        printf("1 - Display information about hospital employees\n2 - Edit information about hospital employees\n3 - Add new user\n4 - Display all users\n5 - Add new hospital employee\n0 - Exit\n");
-        scanf("%d", &n);
-        switch(n)
-        {
-            case 1:
-                outputInformationAboutHospitalEmployees(a, sizeEmployee);
-                system("pause");
-                break;
-            case 2:
-                outputInformationAboutHospitalEmployees(a, sizeEmployee);
-                editInformationAboutHospitalEmployees(a, sizeEmployee);
-                break;
-            case 3:
-                addNewUser(a1, sizeUsers);
-                (*sizeUsers)++;
-                break;
-            case 4:
-                outputUsers(a1, sizeUsers);
-                break;
-            case 5:
-                addNewHospitalEmployee(a, sizeEmployee);
-                (*sizeEmployee)++;
-                break;
-            case 0:
-                stop=1;
-                break;
-            default:
-                printf("\nWrong number, please try again\n");
-                break;
+        case 1:
+            strcpy(enteredValue, "surname");
+            searchEngine(enteredValue);
+            break;
+        case 2:
+            searchEngine(enteredValue);
+            break;
+        case 3:
+            searchEngine(enteredValue);
+            break;
+        case 4:
+            searchEngine(enteredValue);
+            break;
+        case 5:
+            searchEngine(enteredValue);
+            break;
+        case 6:
+            searchEngine(enteredValue);
+            break;
+        case 7:
+            searchEngine(enteredValue);
+            break;
+        case 0:
+            stop = 1;
+            break;
+        default:
+            printf("Wrong number, please try again\n");
+            system("pause");
         }
     }
 }
-int save(char *filename, struct users *a, int *sizeUsers)
+void userList(int *stopAdmin)
 {
-    FILE *fp;
-    char *c;
-    int size=sizeof(struct users);
-    if ((fp = fopen(filename, "wb"))==NULL)
+    int stop = 0, n;
+    while (stop == 0)
     {
-        perror("Error occured while opening file");
-        return 1;
+        system("cls");
+        fflush(stdin);
+        printf("1 - Add user\n2 - Edit user\n3 - Delete user\n4 - Display users\n0 - Exit\n");
+        scanf("%d", &n);
+        switch (n)
+        {
+        case 1:
+            addNewUser();
+            break;
+        case 2:
+            editUsers(stopAdmin, &stop);
+            break;
+        case 3:
+            deleteUser();
+            break;
+        case 4:
+            outputUsers();
+            system("pause");
+            break;
+        case 0:
+            stop = 1;
+            break;
+        default:
+            printf("Wrong number, please try again\n");
+            system("pause");
+            break;
+        }
     }
-    c=(char*)sizeUsers;
-    for (int i=0; i<sizeof(int); i++)
-    {
-        putc((*c)++, fp);
-    }
-    c=(char *)a;
-    for (int i=0; i<size; i++)
-    {
-        putc(*c, fp);
-        c++;
-    }
-    fclose(fp);
-    return 0;
 }
-int load(char *filename, int *size)
+void employeeList()
 {
-    FILE *fp;
-    char *c;
-    int  i;
-    int m=sizeof(int);
-    int *pti=(int*)malloc(m);
-    if ((fp = fopen(filename, "r"))==NULL)
+    int stop = 0, n;
+    while (stop == 0)
     {
-        perror("Error occured while opening file");
-        return 1;
+        system("cls");
+        fflush(stdin);
+        printf("1 - Add hospital employee\n2 - Edit hospital employee\n3 - Delete hospital employee\n4 - Display hospital employees\n5 - Display a list of payments to hospital employees\n6 - Display the total amount of payments to hospital employees\n7 - Search\n0 - Exit\n");
+        scanf("%d", &n);
+        switch (n)
+        {
+        case 1:
+            addNewHospitalEmployee();
+            break;
+        case 2:
+            editHospitalEmployees();
+            break;
+        case 3:
+            deleteHospitalEmployee();
+            break;
+        case 4:
+            outputHospitalEmployees();
+            system("pause");
+            break;
+        case 5:
+            outputAlistOfPayments();
+            break;
+        case 6:
+            outputTotalAmountofPayments();
+            break;
+        case 7:
+            search();
+            break;
+        case 0:
+            stop = 1;
+            break;
+        default:
+            printf("Wrong number, please try again\n");
+            system("pause");
+            break;
+        }
     }
-    c=(char*)pti;
-    while (m>0)
+}
+void usercapabilities()
+{
+    int stop = 0, n;
+    while (stop == 0)
     {
-        i=getc(fp);
-        if (i==EOF) break;
-        *c=i;
-        c++;
-        m--;
+        system("cls");
+        fflush(stdin);
+        printf("1 - Display hospital employees\n2 - Display a list of payments to hospital employees\n3 - Display the total amount of payments to hospital employees\n0 - Log out\n");
+        scanf("%d", &n);
+        switch (n)
+        {
+        case 1:
+            outputHospitalEmployees();
+            system("pause");
+            break;
+        case 2:
+            outputAlistOfPayments();
+            break;
+        case 3:
+            outputTotalAmountofPayments();
+            break;
+        case 0:
+            stop = 1;
+            userNum = 0;
+            break;
+        default:
+            printf("Wrong number, please try again\n");
+            break;
+        }
     }
-    *size=*pti;
-    struct users *ptr=(struct users*) malloc(*size*sizeof(struct users));
-    c=(char*)ptr;
-    while ((i=getc(fp))!=EOF)
+}
+void admincapabilities()
+{
+    int stop = 0, n;
+    while (stop == 0)
     {
-        *c=i;
-        c++;
+        system("cls");
+        fflush(stdin);
+        printf("1 - Users\n2 - Hospital employees\n0 - Log out\n");
+        scanf("%d", &n);
+        switch (n)
+        {
+        case 1:
+            userList(&stop);
+            break;
+        case 2:
+            employeeList();
+            break;
+        case 0:
+            stop = 1;
+            userNum = 0;
+            break;
+        default:
+            printf("Wrong number, please try again\n");
+            system("pause");
+            break;
+        }
     }
-    free(pti);
-    free(ptr);
-    fclose(fp);
-    return 0;
 }
 int main()
 {
-    int k, sizeUsers=2, n, sizeEmployee=1, stop1, n1, stopmain=0;
-    char *filename ="users.dat";
-    char *filename1 ="employee.dat";
-    struct users a1[5]={"admin", "admin", 1, "user", "user", 0};
-    struct hospitalEmployee a[10]={"Kostroma", "Matvey", "Olegovich", 2018, 11, 5, 8.54};
-    load(filename, &sizeUsers);
-    while (stopmain==0)
+    int role, stopmain = 0;
+    if (load() == 0)
     {
-        pass(&k, a1, &sizeUsers, &stopmain);
-        if (k==2) usercapabilities(a, &sizeEmployee);
-        if (k==1) admincapabilities(a, a1, &sizeEmployee, &sizeUsers);
-        stop1=0;
-        while(k!=-1)
+        while (stopmain == 0)
         {
-            printf("1 - Log in\n0 - Close programm\n");
-            scanf("%d", &n1);
-            switch (n1)
-            {
-            case 1:
-                k=-1;
-                break;
-            case 0:
-                k=-1;
-                stopmain=1;
-                break;
-            default:
-                printf("\nWrong number, please try again\n");
-                break;
-            }
+            system("cls");
+            fflush(stdin);
+            pass(&role, &stopmain);
+            if (role == 2)
+                usercapabilities();
+            else if (role == 1)
+                admincapabilities();
+            if (userNum == 0)
+                logInAgain(&stopmain);
         }
+        save();
     }
-    save(filename, a1, &sizeUsers);
     return 0;
 }
