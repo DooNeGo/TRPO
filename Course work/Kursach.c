@@ -157,7 +157,7 @@ void outputHospitalEmployees()
     {
         printf("A list of hospital employees:\n");
         for (int i = 0; i < sizeEmployee; i++)
-            printf("%d.|FIO: %2s %2s %2s | Year: %2d | Month: %2d | Number of days of absence due to illness: %2d | Payment in one day: %2.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+            printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
     }
     else
         printf("There are no hospital employees in the database\n");
@@ -512,7 +512,7 @@ void searchBySurname()
         {
             if (strcmp(a[i].surname, surname) == 0)
             {
-                printf("%d.|FIO: %2s %2s %2s | Year: %2d | Month: %2d | Number of days of absence due to illness: %2d | Payment in one day: %2.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
             }
         }
     }
@@ -532,7 +532,7 @@ void searchByName()
         {
             if (strcmp(a[i].name, name) == 0)
             {
-                printf("%d.|FIO: %2s %2s %2s | Year: %2d | Month: %2d | Number of days of absence due to illness: %2d | Payment in one day: %2.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
             }
         }
     }
@@ -552,7 +552,7 @@ void searchByPatronymic()
         {
             if (strcmp(a[i].patronymic, patronymic) == 0)
             {
-                printf("%d.|FIO: %2s %2s %2s | Year: %2d | Month: %2d | Number of days of absence due to illness: %2d | Payment in one day: %2.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
             }
         }
     }
@@ -572,7 +572,7 @@ void searchByYear()
         {
             if (a[i].years == year)
             {
-                printf("%d.|FIO: %2s %2s %2s | Year: %2d | Month: %2d | Number of days of absence due to illness: %2d | Payment in one day: %2.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
             }
         }
     }
@@ -592,7 +592,7 @@ void searchByMonth()
         {
             if (a[i].months == month)
             {
-                printf("%d.|FIO: %2s %2s %2s | Year: %2d | Month: %2d | Number of days of absence due to illness: %2d | Payment in one day: %2.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
             }
         }
     }
@@ -613,7 +613,7 @@ void searchByDays()
         {
             if (a[i].days == days)
             {
-                printf("%d.|FIO: %2s %2s %2s | Year: %2d | Month: %2d | Number of days of absence due to illness: %2d | Payment in one day: %2.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
             }
         }
     }
@@ -633,7 +633,7 @@ void searchByPayment()
         {
             if (a[i].paymentinOneDay == payment)
             {
-                printf("%d.|FIO: %2s %2s %2s | Year: %2d | Month: %2d | Number of days of absence due to illness: %2d | Payment in one day: %2.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
             }
         }
     }
