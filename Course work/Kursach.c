@@ -354,7 +354,7 @@ void addNewHospitalEmployee()
     sizeEmployee++;
     system("pause");
 }
-void editUsers(int *stopAdmin, int *stopUserList)
+void editUsers()
 {
     int stop = 0, n, stop1 = 0, n1, stop2 = 0;
     while (stop == 0)
@@ -417,16 +417,6 @@ void editUsers(int *stopAdmin, int *stopUserList)
                     break;
                 }
             }
-        if (n == userNum)
-        {
-            printf("You have changed the current user, please re-login\n");
-            stop = 1;
-            stop1 = 1;
-            *stopAdmin = 1;
-            *stopUserList = 1;
-            userNum = -1;
-            system("pause");
-        }
     }
 }
 void deleteUser()
@@ -690,7 +680,7 @@ void search()
         }
     }
 }
-void userList(int *stopAdmin)
+void userList()
 {
     int stop = 0, n;
     while (stop == 0)
@@ -705,7 +695,7 @@ void userList(int *stopAdmin)
             addNewUser();
             break;
         case 2:
-            editUsers(stopAdmin, &stop);
+            editUsers();
             break;
         case 3:
             deleteUser();
@@ -774,7 +764,7 @@ void usercapabilities()
     {
         system("cls");
         fflush(stdin);
-        printf("1 - Display hospital employees\n2 - Display a list of payments to hospital employees\n3 - Display the total amount of payments to hospital employees\n0 - Log out\n");
+        printf("1 - Display hospital employees\n2 - Display a list of payments to hospital employees\n3 - Display the total amount of payments to hospital employees\n4 - Search\n0 - Log out\n");
         scanf("%d", &n);
         switch (n)
         {
@@ -787,6 +777,9 @@ void usercapabilities()
             break;
         case 3:
             outputTotalAmountofPayments();
+            break;
+        case 4:
+            search();
             break;
         case 0:
             stop = 1;
@@ -810,7 +803,7 @@ void admincapabilities()
         switch (n)
         {
         case 1:
-            userList(&stop);
+            userList();
             break;
         case 2:
             employeeList();
