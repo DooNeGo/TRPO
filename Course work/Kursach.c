@@ -178,6 +178,12 @@ void outputHospitalEmployees()
     else
         printf("There are no hospital employees in the database\n");
 }
+void outputSpecificHospitalEmployee(int *numOfEmployee)
+{
+    system("cls");
+    fflush(stdin);
+    printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", *numOfEmployee, (a + *numOfEmployee-1)->surname, (a + *numOfEmployee-1)->name, (a + *numOfEmployee-1)->patronymic, (a + *numOfEmployee-1)->years, (a + *numOfEmployee-1)->months, (a + *numOfEmployee-1)->days, (a +*numOfEmployee-1)->paymentinOneDay);
+}
 void editHospitalEmployees()
 {
     int n, stop = 0, n1, stop1 = 0;
@@ -196,8 +202,7 @@ void editHospitalEmployees()
             else
                 while (stop1 == 0)
                 {
-                    system("cls");
-                    fflush(stdin);
+                    outputSpecificHospitalEmployee(&n1);
                     printf("1 - Edit surname\n2 - Edit name\n3 - Edit patronymic\n4 - Edit Number of years of absence due to illness");
                     printf("\n5 - Edit number of month of absence due to illness\n6 - Edit number of days of absence due to illness\n7 - Edit payment in one day\n0 - Exit\n");
                     scanf("%d", &n);
