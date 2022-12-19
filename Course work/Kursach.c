@@ -17,7 +17,7 @@ struct users
     char password[30];
     int role;
 } a1[50];
-int sizeUsers = 0, sizeEmployee = 0, userNum = 0;
+int sizeUsers = 0, sizeEmployee = 0, userNum = 0, role = 0;
 void array_nulling(char *array, int *size)
 {
     for (int i = 0; i < *size; i++)
@@ -54,19 +54,19 @@ void logInAgain(int *stopmain)
         }
     }
 }
-void userVerification(char *login, char *password, int *role)
+void userVerification(char *login, char *password)
 {
     for (int i = 0; i < sizeUsers; i++)
     {
         if (strcmp(a1[i].login, login) == 0 && strcmp(a1[i].password, password) == 0)
         {
             userNum = i + 1;
-            *role = a1[i].role;
+            role = a1[i].role;
             printf("Enter successful! Hello %s\n", a1[i].login);
         }
     }
 }
-void pass(int *role, int *stopmain)
+void pass(int *stopmain)
 {
     int n, stop, maxNumofLetters = 30;
     char login[maxNumofLetters], password[maxNumofLetters];
@@ -75,14 +75,14 @@ void pass(int *role, int *stopmain)
         system("cls");
         fflush(stdin);
         stop = 0;
-        *role = 0;
+        role = 0;
         array_nulling(login, &maxNumofLetters);
         array_nulling(password, &maxNumofLetters);
         printf("Login: ");
         scanf("%s", &login);
         printf("Password: ");
         scanf("%s", &password);
-        userVerification(login, password, role);
+        userVerification(login, password);
         if (userNum == 0)
         {
             system("cls");
@@ -106,12 +106,19 @@ void createAdmin()
 }
 int load()
 {
-    FILE *file = fopen("database.dat", "rb");
-    if (file)
+    FILE *fileEmployees = fopen("database.dat", "rb");
+    FILE *fileUsers = fopen("users.txt", "r");
+    if (fileUsers)
     {
-        fread(&sizeUsers, sizeof(int), 1, file);
-        fread(&sizeEmployee, sizeof(int), 1, file);
-        if (sizeUsers > 50 || sizeEmployee > 100)
+        fscanf(fileUsers, "%d", &sizeUsers);
+        fread(&sizeEmployee, sizeof(int), 1, fileEmployees);
+        if (sizeUsers > 50)
+        {
+            printf("The users file is damaged\n");
+            system("pause");
+            return 1;
+        }
+        if (sizeEmployee > 100)
         {
             printf("The database is damaged\n");
             system("pause");
@@ -121,14 +128,18 @@ int load()
         {
             if (sizeUsers > 0)
             {
-                fread(a1, sizeof(struct users), sizeUsers, file);
+                for (int i = 0; i < sizeUsers; i++)
+                {
+                    fscanf(fileUsers, "%s %s %d\n", &a1[i].login, &a1[i].password, &a1[i].role);
+                }
             }
             if (sizeEmployee > 0)
             {
-                fread(a, sizeof(struct hospitalEmployee), sizeEmployee, file);
+                fread(a, sizeof(struct hospitalEmployee), sizeEmployee, fileEmployees);
             }
         }
-        fclose(file);
+        fclose(fileEmployees);
+        fclose(fileUsers);
     }
     else
         createAdmin();
@@ -136,18 +147,23 @@ int load()
 }
 void save()
 {
-    FILE *file = fopen("database.dat", "wb");
-    fwrite(&sizeUsers, sizeof(int), 1, file);
-    fwrite(&sizeEmployee, sizeof(int), 1, file);
+    FILE *fileEmployees = fopen("database.dat", "wb");
+    FILE *fileUsers = fopen("users.txt", "w");
+    fprintf(fileUsers, "%d\n", sizeUsers);
+    fwrite(&sizeEmployee, sizeof(int), 1, fileEmployees);
     if (sizeUsers > 0)
     {
-        fwrite(a1, sizeof(struct users), sizeUsers, file);
+        for (int i = 0; i < sizeUsers; i++)
+        {
+            fprintf(fileUsers, "%s %s %d\n", a1[i].login, a1[i].password, a1[i].role);
+        }
     }
     if (sizeEmployee > 0)
     {
-        fwrite(a, sizeof(struct hospitalEmployee), sizeEmployee, file);
+        fwrite(a, sizeof(struct hospitalEmployee), sizeEmployee, fileEmployees);
     }
-    fclose(file);
+    fclose(fileEmployees);
+    fclose(fileUsers);
 }
 void outputHospitalEmployees()
 {
@@ -438,12 +454,6 @@ void deleteUser()
             printf("You can't delete an active user!!!\n");
             system("pause");
         }
-        else if (n == sizeUsers)
-        {
-            printf("Delete user successfully\n");
-            sizeUsers--;
-            system("pause");
-        }
         else
         {
             for (i = n - 1; i < sizeUsers - 1; i++)
@@ -680,6 +690,43 @@ void search()
         }
     }
 }
+void arrayCopy(struct hospitalEmployee *array)
+{
+    for (int i = 0; i < sizeEmployee; i++)
+    {
+        strcpy(array[i].surname, a[i].surname);
+        strcpy(array[i].name, a[i].name);
+        strcpy(array[i].patronymic, a[i].patronymic);
+        array[i].years = a[i].years;
+        array[i].months = a[i].months;
+        array[i].days = a[i].days;
+        array[i].paymentinOneDay = a[i].paymentinOneDay;
+    }
+}
+int compare()
+{
+    return 0;
+}
+void sortBySurname()
+{
+    struct hospitalEmployee array[100];
+    int i;
+    arrayCopy(array);
+}
+void sortBy()
+{
+    int stop = 0, n;
+    while (stop == 0)
+    {
+        system("cls");
+        printf("1 - Sort by surname\n2 - Sort by name\n");
+        switch (n)
+        {
+        case 1:
+            break;
+        }
+    }
+}
 void userList()
 {
     int stop = 0, n;
@@ -821,14 +868,14 @@ void admincapabilities()
 }
 int main()
 {
-    int role, stopmain = 0;
+    int stopmain = 0;
     if (load() == 0)
     {
         while (stopmain == 0)
         {
             system("cls");
             fflush(stdin);
-            pass(&role, &stopmain);
+            pass(&stopmain);
             if (role == 2)
                 usercapabilities();
             else if (role == 1)
