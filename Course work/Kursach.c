@@ -10,13 +10,13 @@ struct hospitalEmployee
     int months;
     int days;
     float paymentinOneDay;
-} a[100];
-struct users
+} employees[100];
+struct user
 {
     char login[30];
     char password[30];
     int role;
-} a1[50];
+} users[50];
 int sizeUsers = 0, sizeEmployee = 0, userNum = 0, role = 0;
 void array_nulling(char *array, int *size)
 {
@@ -58,11 +58,11 @@ void userVerification(char *login, char *password)
 {
     for (int i = 0; i < sizeUsers; i++)
     {
-        if (strcmp(a1[i].login, login) == 0 && strcmp(a1[i].password, password) == 0)
+        if (strcmp(users[i].login, login) == 0 && strcmp(users[i].password, password) == 0)
         {
             userNum = i + 1;
-            role = a1[i].role;
-            printf("Enter successful! Hello %s\n", a1[i].login);
+            role = users[i].role;
+            printf("Enter successful! Hello %s\n", users[i].login);
         }
     }
 }
@@ -98,9 +98,9 @@ void pass(int *stopmain)
 void createAdmin()
 {
     sizeUsers++;
-    strcpy(a1[0].login, "admin");
-    strcpy(a1[0].password, "admin");
-    a1[0].role = 1;
+    strcpy(users[0].login, "admin");
+    strcpy(users[0].password, "admin");
+    users[0].role = 1;
     printf("Admin account was created\nLogin: admin\nPassword: admin\n");
     system("pause");
 }
@@ -130,12 +130,12 @@ int load()
             {
                 for (int i = 0; i < sizeUsers; i++)
                 {
-                    fscanf(fileUsers, "%s %s %d\n", &a1[i].login, &a1[i].password, &a1[i].role);
+                    fscanf(fileUsers, "%s %s %d\n", &users[i].login, &users[i].password, &users[i].role);
                 }
             }
             if (sizeEmployee > 0)
             {
-                fread(a, sizeof(struct hospitalEmployee), sizeEmployee, fileEmployees);
+                fread(employees, sizeof(struct hospitalEmployee), sizeEmployee, fileEmployees);
             }
         }
         fclose(fileEmployees);
@@ -155,12 +155,12 @@ void save()
     {
         for (int i = 0; i < sizeUsers; i++)
         {
-            fprintf(fileUsers, "%s %s %d\n", a1[i].login, a1[i].password, a1[i].role);
+            fprintf(fileUsers, "%s %s %d\n", users[i].login, users[i].password, users[i].role);
         }
     }
     if (sizeEmployee > 0)
     {
-        fwrite(a, sizeof(struct hospitalEmployee), sizeEmployee, fileEmployees);
+        fwrite(employees, sizeof(struct hospitalEmployee), sizeEmployee, fileEmployees);
     }
     fclose(fileEmployees);
     fclose(fileUsers);
@@ -173,7 +173,7 @@ void outputHospitalEmployees()
     {
         printf("A list of hospital employees:\n");
         for (int i = 0; i < sizeEmployee; i++)
-            printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+            printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (employees + i)->surname, (employees + i)->name, (employees + i)->patronymic, (employees + i)->years, (employees + i)->months, (employees + i)->days, (employees + i)->paymentinOneDay);
     }
     else
         printf("There are no hospital employees in the database\n");
@@ -182,7 +182,7 @@ void outputSpecificHospitalEmployee(int *numOfEmployee)
 {
     system("cls");
     fflush(stdin);
-    printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", *numOfEmployee, (a + *numOfEmployee-1)->surname, (a + *numOfEmployee-1)->name, (a + *numOfEmployee-1)->patronymic, (a + *numOfEmployee-1)->years, (a + *numOfEmployee-1)->months, (a + *numOfEmployee-1)->days, (a +*numOfEmployee-1)->paymentinOneDay);
+    printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", *numOfEmployee, (employees + *numOfEmployee-1)->surname, (employees + *numOfEmployee-1)->name, (employees + *numOfEmployee-1)->patronymic, (employees + *numOfEmployee-1)->years, (employees + *numOfEmployee-1)->months, (employees + *numOfEmployee-1)->days, (employees +*numOfEmployee-1)->paymentinOneDay);
 }
 void editHospitalEmployees()
 {
@@ -210,37 +210,37 @@ void editHospitalEmployees()
                     {
                     case 1:
                         printf("\nEnter new surname: ");
-                        scanf("%s", &(a + n1 - 1)->surname);
+                        scanf("%s", &(employees + n1 - 1)->surname);
                         printf("Surname has been changed\n");
                         break;
                     case 2:
                         printf("\nEnter new name: ");
-                        scanf("%s", &(a + n1 - 1)->name);
+                        scanf("%s", &(employees + n1 - 1)->name);
                         printf("Name has been changed\n");
                         break;
                     case 3:
                         printf("\nEnter new patronymic: ");
-                        scanf("%s", &(a + n1 - 1)->patronymic);
+                        scanf("%s", &(employees + n1 - 1)->patronymic);
                         printf("Patronymic has been changed\n");
                         break;
                     case 4:
                         printf("\nEnter new number of years of absence due to illness: ");
-                        scanf("%d", &(a + n1 - 1)->years);
+                        scanf("%d", &(employees + n1 - 1)->years);
                         printf("Number of years of absence due to illness has been changed\n");
                         break;
                     case 5:
                         printf("\nEnter new number of months of absence due to illness: ");
-                        scanf("%d", &(a + n1 - 1)->months);
+                        scanf("%d", &(employees + n1 - 1)->months);
                         printf("Number of months of absence due to illness has been changed\n");
                         break;
                     case 6:
                         printf("\nEnter new number of days of absence due to illness: ");
-                        scanf("%d", &(a + n1 - 1)->days);
+                        scanf("%d", &(employees + n1 - 1)->days);
                         printf("Number of days of absence due to illness has been changed\n");
                         break;
                     case 7:
                         printf("\nEnter new payment in one day: ");
-                        scanf("%f", &(a + n1 - 1)->paymentinOneDay);
+                        scanf("%f", &(employees + n1 - 1)->paymentinOneDay);
                         printf("Payment in one day has been changed\n");
                         break;
                     case 0:
@@ -283,13 +283,13 @@ void deleteHospitalEmployee()
             {
                 for (i = n - 1; i < sizeEmployee - 1; i++)
                 {
-                    strcpy((a + i)->surname, (a + i + 1)->surname);
-                    strcpy((a + i)->name, (a + i + 1)->name);
-                    strcpy((a + i)->patronymic, (a + i + 1)->patronymic);
-                    (a + i)->years = (a + i + 1)->years;
-                    (a + i)->months = (a + i + 1)->months;
-                    (a + i)->days = (a + i + 1)->days;
-                    (a + i)->paymentinOneDay = (a + i + 1)->paymentinOneDay;
+                    strcpy((employees + i)->surname, (employees + i + 1)->surname);
+                    strcpy((employees + i)->name, (employees + i + 1)->name);
+                    strcpy((employees + i)->patronymic, (employees + i + 1)->patronymic);
+                    (employees + i)->years = (employees + i + 1)->years;
+                    (employees + i)->months = (employees + i + 1)->months;
+                    (employees + i)->days = (employees + i + 1)->days;
+                    (employees + i)->paymentinOneDay = (employees + i + 1)->paymentinOneDay;
                 }
                 sizeEmployee--;
                 printf("Delete hospital employee successfully\n");
@@ -311,13 +311,13 @@ void addNewUser()
         fflush(stdin);
         stop = 1;
         printf("Enter Login (Q(q)-Exit): ");
-        scanf("%s", &((a1 + sizeUsers)->login));
-        if (memcmp((a1 + sizeUsers)->login, "Q", 2) == 0 || memcmp((a1 + sizeUsers)->login, "q", 2) == 0)
+        scanf("%s", &((users + sizeUsers)->login));
+        if (memcmp((users + sizeUsers)->login, "Q", 2) == 0 || memcmp((users + sizeUsers)->login, "q", 2) == 0)
             stop = 2;
         else
             for (i = 0; i < sizeUsers; i++)
             {
-                if (strcmp((a1 + sizeUsers)->login, (a1 + i)->login) == 0)
+                if (strcmp((users + sizeUsers)->login, (users + i)->login) == 0)
                 {
                     printf("This login already exists\n");
                     stop = 0;
@@ -329,12 +329,12 @@ void addNewUser()
     if (stop == 1)
     {
         printf("Enter Password: ");
-        scanf("%s", &((a1 + sizeUsers)->password));
+        scanf("%s", &((users + sizeUsers)->password));
         while (stop == 1)
         {
             printf("Enter Role(1-admin or 2-user): ");
-            scanf("%d", &((a1 + sizeUsers)->role));
-            if ((a1 + sizeUsers)->role == 1 || (a1 + sizeUsers)->role == 2)
+            scanf("%d", &((users + sizeUsers)->role));
+            if ((users + sizeUsers)->role == 1 || (users + sizeUsers)->role == 2)
             {
                 printf("New user was added\n");
                 sizeUsers++;
@@ -355,22 +355,22 @@ void outputUsers()
     fflush(stdin);
     printf("A list of users:\n");
     for (int i = 0; i < sizeUsers; i++)
-        printf("%d. Login: %s  Password: %s  Role: %d\n", i + 1, (a1 + i)->login, (a1 + i)->password, (a1 + i)->role);
+        printf("%d. Login: %s  Password: %s  Role: %d\n", i + 1, (users + i)->login, (users + i)->password, (users + i)->role);
 }
 void addNewHospitalEmployee()
 {
     system("cls");
     fflush(stdin);
     printf("Enter FIO: ");
-    scanf("%s %s %s", &(a + sizeEmployee)->surname, &(a + sizeEmployee)->name, &(a + sizeEmployee)->patronymic);
+    scanf("%s %s %s", &(employees + sizeEmployee)->surname, &(employees + sizeEmployee)->name, &(employees + sizeEmployee)->patronymic);
     printf("Enter year: ");
-    scanf("%d", &((a + sizeEmployee)->years));
+    scanf("%d", &((employees + sizeEmployee)->years));
     printf("Enter month: ");
-    scanf("%d", &((a + sizeEmployee)->months));
+    scanf("%d", &((employees + sizeEmployee)->months));
     printf("Enter number of days of absence due to illness: ");
-    scanf("%d", &((a + sizeEmployee)->days));
+    scanf("%d", &((employees + sizeEmployee)->days));
     printf("Enter payment in one day: ");
-    scanf("%f", &((a + sizeEmployee)->paymentinOneDay));
+    scanf("%f", &((employees + sizeEmployee)->paymentinOneDay));
     printf("New hospital employee was added\n");
     sizeEmployee++;
     system("pause");
@@ -379,7 +379,7 @@ void outputSpecificUser(int *numOfUser)
 {
     system("cls");
     fflush(stdin);
-    printf("%d. Login: %s  Password: %s  Role: %d\n", *numOfUser, (a1 + *numOfUser - 1)->login, (a1 + *numOfUser - 1)->password, (a1 + *numOfUser - 1)->role);
+    printf("%d. Login: %s  Password: %s  Role: %d\n", *numOfUser, (users + *numOfUser - 1)->login, (users + *numOfUser - 1)->password, (users + *numOfUser - 1)->role);
 }
 void editUsers()
 {
@@ -405,7 +405,7 @@ void editUsers()
                     system("cls");
                     fflush(stdin);
                     printf("Enter new login: ");
-                    scanf("%s", &(a1 + n - 1)->login);
+                    scanf("%s", &(users + n - 1)->login);
                     printf("Login has been changed\n");
                     system("pause");
                     break;
@@ -413,7 +413,7 @@ void editUsers()
                     system("cls");
                     fflush(stdin);
                     printf("Enter new password: ");
-                    scanf("%s", &(a1 + n - 1)->password);
+                    scanf("%s", &(users + n - 1)->password);
                     printf("Password has been changed\n");
                     system("pause");
                     break;
@@ -423,8 +423,8 @@ void editUsers()
                         system("cls");
                         fflush(stdin);
                         printf("Enter new role(1-admin or 2-user): ");
-                        scanf("%d", &(a1 + n - 1)->role);
-                        if ((a1 + n - 1)->role == 1 || (a1 + n - 1)->role == 2)
+                        scanf("%d", &(users + n - 1)->role);
+                        if ((users + n - 1)->role == 1 || (users + n - 1)->role == 2)
                             stop2 = 1;
                         else
                             printf("Wrong number, please try again\n");
@@ -468,9 +468,9 @@ void deleteUser()
         {
             for (i = n - 1; i < sizeUsers - 1; i++)
             {
-                strcpy((a1 + i)->login, (a1 + i + 1)->login);
-                strcpy((a1 + i)->password, (a1 + i + 1)->password);
-                (a1 + i)->role = (a1 + i + 1)->role;
+                strcpy((users + i)->login, (users + i + 1)->login);
+                strcpy((users + i)->password, (users + i + 1)->password);
+                (users + i)->role = (users + i + 1)->role;
             }
             sizeUsers--;
             if (userNum > n)
@@ -491,10 +491,10 @@ void outputAlistOfPayments()
     scanf("%d", &month);
     for (i = 0; i < sizeEmployee; i++)
     {
-        if ((a + i)->years == year && (a + i)->months == month)
+        if ((employees + i)->years == year && (employees + i)->months == month)
         {
-            monthPayment = (30 - (a + i)->days) * (a + i)->paymentinOneDay;
-            printf("%d. FIO: %s %s %s  Payment: %d\n", i + 1, a[i].surname, a[i].name, a[i].patronymic, monthPayment);
+            monthPayment = (30 - (employees + i)->days) * (employees + i)->paymentinOneDay;
+            printf("%d. FIO: %s %s %s  Payment: %d\n", i + 1, employees[i].surname, employees[i].name, employees[i].patronymic, monthPayment);
         }
     }
     system("pause");
@@ -510,9 +510,9 @@ void outputTotalAmountofPayments()
     scanf("%d", &month);
     for (i = 0; i < sizeEmployee; i++)
     {
-        if ((a + i)->years == year && (a + i)->months == month)
+        if ((employees + i)->years == year && (employees + i)->months == month)
         {
-            totalMonthPayment = totalMonthPayment + (30 - (a + i)->days) * (a + i)->paymentinOneDay;
+            totalMonthPayment = totalMonthPayment + (30 - (employees + i)->days) * (employees + i)->paymentinOneDay;
         }
     }
     printf("Total payment: %d\n", totalMonthPayment);
@@ -530,9 +530,9 @@ void searchBySurname()
         scanf("%s", &surname);
         for (int i = 0; i < sizeEmployee; i++)
         {
-            if (strcmp(a[i].surname, surname) == 0)
+            if (strcmp(employees[i].surname, surname) == 0)
             {
-                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (employees + i)->surname, (employees + i)->name, (employees + i)->patronymic, (employees + i)->years, (employees + i)->months, (employees + i)->days, (employees + i)->paymentinOneDay);
             }
         }
     }
@@ -550,9 +550,9 @@ void searchByName()
         scanf("%s", &name);
         for (int i = 0; i < sizeEmployee; i++)
         {
-            if (strcmp(a[i].name, name) == 0)
+            if (strcmp(employees[i].name, name) == 0)
             {
-                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (employees + i)->surname, (employees + i)->name, (employees + i)->patronymic, (employees + i)->years, (employees + i)->months, (employees + i)->days, (employees + i)->paymentinOneDay);
             }
         }
     }
@@ -570,9 +570,9 @@ void searchByPatronymic()
         scanf("%s", &patronymic);
         for (int i = 0; i < sizeEmployee; i++)
         {
-            if (strcmp(a[i].patronymic, patronymic) == 0)
+            if (strcmp(employees[i].patronymic, patronymic) == 0)
             {
-                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %f|\n", i + 1, (employees + i)->surname, (employees + i)->name, (employees + i)->patronymic, (employees + i)->years, (employees + i)->months, (employees + i)->days, (employees + i)->paymentinOneDay);
             }
         }
     }
@@ -590,9 +590,9 @@ void searchByYear()
         scanf("%d", &year);
         for (int i = 0; i < sizeEmployee; i++)
         {
-            if (a[i].years == year)
+            if (employees[i].years == year)
             {
-                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %f|\n", i + 1, (employees + i)->surname, (employees + i)->name, (employees + i)->patronymic, (employees + i)->years, (employees + i)->months, (employees + i)->days, (employees + i)->paymentinOneDay);
             }
         }
     }
@@ -610,9 +610,9 @@ void searchByMonth()
         scanf("%d", &month);
         for (int i = 0; i < sizeEmployee; i++)
         {
-            if (a[i].months == month)
+            if (employees[i].months == month)
             {
-                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (employees + i)->surname, (employees + i)->name, (employees + i)->patronymic, (employees + i)->years, (employees + i)->months, (employees + i)->days, (employees + i)->paymentinOneDay);
             }
         }
     }
@@ -631,9 +631,9 @@ void searchByDays()
 
         for (int i = 0; i < sizeEmployee; i++)
         {
-            if (a[i].days == days)
+            if (employees[i].days == days)
             {
-                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (employees + i)->surname, (employees + i)->name, (employees + i)->patronymic, (employees + i)->years, (employees + i)->months, (employees + i)->days, (employees + i)->paymentinOneDay);
             }
         }
     }
@@ -651,9 +651,9 @@ void searchByPayment()
         scanf("%f", &payment);
         for (int i = 0; i < sizeEmployee; i++)
         {
-            if (a[i].paymentinOneDay == payment)
+            if (employees[i].paymentinOneDay == payment)
             {
-                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (a + i)->surname, (a + i)->name, (a + i)->patronymic, (a + i)->years, (a + i)->months, (a + i)->days, (a + i)->paymentinOneDay);
+                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (employees + i)->surname, (employees + i)->name, (employees + i)->patronymic, (employees + i)->years, (employees + i)->months, (employees + i)->days, (employees + i)->paymentinOneDay);
             }
         }
     }
@@ -704,13 +704,13 @@ void arrayCopy(struct hospitalEmployee *array)
 {
     for (int i = 0; i < sizeEmployee; i++)
     {
-        strcpy(array[i].surname, a[i].surname);
-        strcpy(array[i].name, a[i].name);
-        strcpy(array[i].patronymic, a[i].patronymic);
-        array[i].years = a[i].years;
-        array[i].months = a[i].months;
-        array[i].days = a[i].days;
-        array[i].paymentinOneDay = a[i].paymentinOneDay;
+        strcpy(array[i].surname, employees[i].surname);
+        strcpy(array[i].name, employees[i].name);
+        strcpy(array[i].patronymic, employees[i].patronymic);
+        array[i].years = employees[i].years;
+        array[i].months = employees[i].months;
+        array[i].days = employees[i].days;
+        array[i].paymentinOneDay = employees[i].paymentinOneDay;
     }
 }
 int compare()
