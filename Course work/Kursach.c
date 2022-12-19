@@ -350,7 +350,7 @@ void outputUsers()
     fflush(stdin);
     printf("A list of users:\n");
     for (int i = 0; i < sizeUsers; i++)
-        printf("%d.Login: %s  Password: %s  Role: %d\n", i + 1, (a1 + i)->login, (a1 + i)->password, (a1 + i)->role);
+        printf("%d. Login: %s  Password: %s  Role: %d\n", i + 1, (a1 + i)->login, (a1 + i)->password, (a1 + i)->role);
 }
 void addNewHospitalEmployee()
 {
@@ -370,6 +370,12 @@ void addNewHospitalEmployee()
     sizeEmployee++;
     system("pause");
 }
+void outputSpecificUser(int *numOfUser)
+{
+    system("cls");
+    fflush(stdin);
+    printf("%d. Login: %s  Password: %s  Role: %d\n", *numOfUser, (a1 + *numOfUser - 1)->login, (a1 + *numOfUser - 1)->password, (a1 + *numOfUser - 1)->role);
+}
 void editUsers()
 {
     int stop = 0, n, stop1 = 0, n1, stop2 = 0;
@@ -385,8 +391,7 @@ void editUsers()
         else
             while (stop1 == 0)
             {
-                system("cls");
-                fflush(stdin);
+                outputSpecificUser(&n);
                 printf("1 - Edit login\n2 - Edit password\n3 - Edit role\n0 - Exit\n");
                 scanf("%d", &n1);
                 switch (n1)
