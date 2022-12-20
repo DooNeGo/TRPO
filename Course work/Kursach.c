@@ -13,8 +13,8 @@ struct hospitalEmployee
 } employees[100];
 struct user
 {
-    char login[30];
-    char password[30];
+    char login[15];
+    char password[15];
     int role;
 } users[50];
 int sizeUsers = 0, sizeEmployee = 0, userNum = 0, role = 0;
@@ -68,7 +68,7 @@ void userVerification(char *login, char *password)
 }
 void pass(int *stopmain)
 {
-    int n, stop, maxNumofLetters = 30;
+    int n, stop, maxNumofLetters = 15;
     char login[maxNumofLetters], password[maxNumofLetters];
     while (userNum == 0)
     {
@@ -129,14 +129,10 @@ int load()
             if (sizeUsers > 0)
             {
                 for (int i = 0; i < sizeUsers; i++)
-                {
                     fscanf(fileUsers, "%s %s %d\n", &users[i].login, &users[i].password, &users[i].role);
-                }
             }
             if (sizeEmployee > 0)
-            {
                 fread(employees, sizeof(struct hospitalEmployee), sizeEmployee, fileEmployees);
-            }
         }
         fclose(fileEmployees);
         fclose(fileUsers);
@@ -173,7 +169,7 @@ void outputHospitalEmployees()
     {
         printf("A list of hospital employees:\n");
         for (int i = 0; i < sizeEmployee; i++)
-            printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (employees + i)->surname, (employees + i)->name, (employees + i)->patronymic, (employees + i)->years, (employees + i)->months, (employees + i)->days, (employees + i)->paymentinOneDay);
+            printf("%2d. FIO: %-s %-s %-s  Year: %-4d  Month: %-2d  Number of days of absence due to illness: %-2d  Payment in one day: %-4.3f\n", i + 1, (employees + i)->surname, (employees + i)->name, (employees + i)->patronymic, (employees + i)->years, (employees + i)->months, (employees + i)->days, (employees + i)->paymentinOneDay);
     }
     else
         printf("There are no hospital employees in the database\n");
@@ -355,7 +351,7 @@ void outputUsers()
     fflush(stdin);
     printf("A list of users:\n");
     for (int i = 0; i < sizeUsers; i++)
-        printf("%d. Login: %s  Password: %s  Role: %d\n", i + 1, (users + i)->login, (users + i)->password, (users + i)->role);
+        printf("%2d. Login: %-15.15s  Password: %-15.15s  Role: %d\n", i + 1, (users + i)->login, (users + i)->password, (users + i)->role);
 }
 void addNewHospitalEmployee()
 {
