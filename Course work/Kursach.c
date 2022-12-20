@@ -182,11 +182,11 @@ void outputSpecificHospitalEmployee(int *numOfEmployee)
 {
     system("cls");
     fflush(stdin);
-    printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", *numOfEmployee, (employees + *numOfEmployee-1)->surname, (employees + *numOfEmployee-1)->name, (employees + *numOfEmployee-1)->patronymic, (employees + *numOfEmployee-1)->years, (employees + *numOfEmployee-1)->months, (employees + *numOfEmployee-1)->days, (employees +*numOfEmployee-1)->paymentinOneDay);
+    printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", *numOfEmployee, (employees + *numOfEmployee - 1)->surname, (employees + *numOfEmployee - 1)->name, (employees + *numOfEmployee - 1)->patronymic, (employees + *numOfEmployee - 1)->years, (employees + *numOfEmployee - 1)->months, (employees + *numOfEmployee - 1)->days, (employees + *numOfEmployee - 1)->paymentinOneDay);
 }
 void editHospitalEmployees()
 {
-    int n, stop = 0, n1, stop1 = 0;
+    int n, stop = 0, n1, stop1;
     while (stop == 0)
     {
         outputHospitalEmployees();
@@ -383,10 +383,12 @@ void outputSpecificUser(int *numOfUser)
 }
 void editUsers()
 {
-    int stop = 0, n, stop1 = 0, n1, stop2 = 0;
+    int stop = 0, n, stop1, n1, stop2;
     while (stop == 0)
     {
         outputUsers();
+        stop1 = 0;
+        stop2 = 0;
         printf("Enter the user's number for edit(0-Exit): ");
         scanf("%d", &n);
         if ((n < 0) || (n > sizeUsers))
