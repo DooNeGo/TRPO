@@ -68,13 +68,12 @@ void userVerification(char *login, char *password)
 }
 void pass(int *stopmain)
 {
-    int n, stop, maxNumofLetters = 15;
+    int n, maxNumofLetters = 15;
     char login[maxNumofLetters], password[maxNumofLetters];
     while (userNum == 0)
     {
         system("cls");
         fflush(stdin);
-        stop = 0;
         role = 0;
         array_nulling(login, &maxNumofLetters);
         array_nulling(password, &maxNumofLetters);
@@ -161,14 +160,14 @@ void save()
     fclose(fileEmployees);
     fclose(fileUsers);
 }
-void outputHospitalEmployees(struct hospitalEmployee *array)
+void outputHospitalEmployees(struct hospitalEmployee *array, int *sizeEmployee)
 {
     system("cls");
     fflush(stdin);
-    if (sizeEmployee > 0)
+    if (*sizeEmployee > 0)
     {
         printf("A list of hospital employees:\n");
-        for (int i = 0; i < sizeEmployee; i++)
+        for (int i = 0; i < *sizeEmployee; i++)
             printf("%2d. FIO: %-s %-s %-s  Year: %-4d  Month: %-2d  Number of days of absence due to illness: %-2d  Payment in one day: %-4.3f\n", i + 1, (array + i)->surname, (array + i)->name, (array + i)->patronymic, (array + i)->years, (array + i)->months, (array + i)->days, (array + i)->paymentinOneDay);
     }
     else
@@ -185,7 +184,7 @@ void editHospitalEmployees()
     int n, stop = 0, n1, stop1;
     while (stop == 0)
     {
-        outputHospitalEmployees(employees);
+        outputHospitalEmployees(employees, &sizeEmployee);
         if (sizeEmployee > 0)
         {
             printf("Enter the employee's number(0-Exit): ");
@@ -260,7 +259,7 @@ void deleteHospitalEmployee()
     int stop = 0, n, i;
     while (stop == 0)
     {
-        outputHospitalEmployees(employees);
+        outputHospitalEmployees(employees, &sizeEmployee);
         if (sizeEmployee > 0)
         {
             printf("Enter the employee's number(0-Exit): ");
@@ -324,8 +323,8 @@ void addNewUser()
     }
     if (stop == 1)
     {
-        printf("Enter Password: ");
-        scanf("%s", &((users + sizeUsers)->password));
+            printf("Enter Password: ");
+            scanf("%s", &((users + sizeUsers)->password));
         while (stop == 1)
         {
             printf("Enter Role(1-admin or 2-user): ");
@@ -516,145 +515,126 @@ void outputTotalAmountofPayments()
     printf("Total payment: %d\n", totalMonthPayment);
     system("pause");
 }
-void searchBySurname()
+void writeArray(struct hospitalEmployee *array, int *numOfEmployee, int *counter)
 {
-    char surname[20];
-    system("cls");
-    if (sizeEmployee == 0)
-        printf("There are no hospital employees in the database\n");
-    else
-    {
-        printf("Enter surname for search: ");
-        scanf("%s", &surname);
-        for (int i = 0; i < sizeEmployee; i++)
-        {
-            if (strcmp(employees[i].surname, surname) == 0)
-            {
-                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (employees + i)->surname, (employees + i)->name, (employees + i)->patronymic, (employees + i)->years, (employees + i)->months, (employees + i)->days, (employees + i)->paymentinOneDay);
-            }
-        }
-    }
-    system("pause");
+    strcpy((array + *counter)->surname, (employees + *numOfEmployee)->surname);
+    strcpy((array + *counter)->name, (employees + *numOfEmployee)->name);
+    strcpy((array + *counter)->patronymic, (employees + *numOfEmployee)->patronymic);
+    (array + *counter)->years = (employees + *numOfEmployee)->years;
+    (array + *counter)->months = (employees + *numOfEmployee)->months;
+    (array + *counter)->days = (employees + *numOfEmployee)->days;
+    (array + *counter)->paymentinOneDay = (employees + *numOfEmployee)->paymentinOneDay;
 }
-void searchByName()
+void searchEngine(int *n)
 {
-    char name[20];
-    system("cls");
-    if (sizeEmployee == 0)
-        printf("There are no hospital employees in the database\n");
-    else
-    {
-        printf("Enter name for search: ");
-        scanf("%s", &name);
-        for (int i = 0; i < sizeEmployee; i++)
-        {
-            if (strcmp(employees[i].name, name) == 0)
-            {
-                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (employees + i)->surname, (employees + i)->name, (employees + i)->patronymic, (employees + i)->years, (employees + i)->months, (employees + i)->days, (employees + i)->paymentinOneDay);
-            }
-        }
-    }
-    system("pause");
-}
-void searchByPatronymic()
-{
-    char patronymic[20];
-    system("cls");
-    if (sizeEmployee == 0)
-        printf("There are no hospital employees in the database\n");
-    else
-    {
-        printf("Enter patronymic for search: ");
-        scanf("%s", &patronymic);
-        for (int i = 0; i < sizeEmployee; i++)
-        {
-            if (strcmp(employees[i].patronymic, patronymic) == 0)
-            {
-                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %f|\n", i + 1, (employees + i)->surname, (employees + i)->name, (employees + i)->patronymic, (employees + i)->years, (employees + i)->months, (employees + i)->days, (employees + i)->paymentinOneDay);
-            }
-        }
-    }
-    system("pause");
-}
-void searchByYear()
-{
-    int year;
-    system("cls");
-    if (sizeEmployee == 0)
-        printf("There are no hospital employees in the database\n");
-    else
-    {
-        printf("Enter year for search: ");
-        scanf("%d", &year);
-        for (int i = 0; i < sizeEmployee; i++)
-        {
-            if (employees[i].years == year)
-            {
-                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %f|\n", i + 1, (employees + i)->surname, (employees + i)->name, (employees + i)->patronymic, (employees + i)->years, (employees + i)->months, (employees + i)->days, (employees + i)->paymentinOneDay);
-            }
-        }
-    }
-    system("pause");
-}
-void searchByMonth()
-{
-    int month;
-    system("cls");
-    if (sizeEmployee == 0)
-        printf("There are no hospital employees in the database\n");
-    else
-    {
-        printf("Enter month for search: ");
-        scanf("%d", &month);
-        for (int i = 0; i < sizeEmployee; i++)
-        {
-            if (employees[i].months == month)
-            {
-                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (employees + i)->surname, (employees + i)->name, (employees + i)->patronymic, (employees + i)->years, (employees + i)->months, (employees + i)->days, (employees + i)->paymentinOneDay);
-            }
-        }
-    }
-    system("pause");
-}
-void searchByDays()
-{
-    int days;
-    system("cls");
-    if (sizeEmployee == 0)
-        printf("There are no hospital employees in the database\n");
-    else
-    {
-        printf("Enter number of days of absence due to illness for search: ");
-        scanf("%d", &days);
-
-        for (int i = 0; i < sizeEmployee; i++)
-        {
-            if (employees[i].days == days)
-            {
-                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (employees + i)->surname, (employees + i)->name, (employees + i)->patronymic, (employees + i)->years, (employees + i)->months, (employees + i)->days, (employees + i)->paymentinOneDay);
-            }
-        }
-    }
-    system("pause");
-}
-void searchByPayment()
-{
+    char FIO[20];
+    struct hospitalEmployee array[100];
+    int ymd, numFind, stop = 0, counter = 0;
     float payment;
     system("cls");
     if (sizeEmployee == 0)
         printf("There are no hospital employees in the database\n");
-    else
+    else if (*n == 1)
+    {
+        printf("Enter surname for search: ");
+        numFind = scanf("%c", &FIO);
+        for (int i = 0; i < sizeEmployee; i++)
+        {
+            if (memcmp(employees[i].surname, FIO, numFind) == 0)
+            {
+                writeArray(array, &i, &counter);
+                counter++;
+            }
+        }
+    }
+    else if (*n == 2)
+    {
+        printf("Enter name for search: ");
+        numFind = scanf("%s", &FIO);
+        for (int i = 0; i < sizeEmployee; i++)
+        {
+            if (memcmp(employees[i].name, FIO, numFind) == 0)
+            {
+                writeArray(array, &i, &counter);
+                counter++;
+            }
+        }
+    }
+    else if (*n == 3)
+    {
+        printf("Enter patronymic for search: ");
+        numFind = scanf("%s", &FIO);
+        for (int i = 0; i < sizeEmployee; i++)
+        {
+            if (memcmp(employees[i].patronymic, FIO, numFind) == 0)
+            {
+                writeArray(array, &i, &counter);
+                counter++;
+            }
+        }
+    }
+    else if (*n == 4)
+    {
+        printf("Enter year for search: ");
+        scanf("%d", &ymd);
+        for (int i = 0; i < sizeEmployee; i++)
+        {
+            if (employees[i].years == ymd)
+            {
+                writeArray(array, &i, &counter);
+                counter++;
+            }
+        }
+    }
+    else if (*n == 5)
+    {
+        while (stop == 0)
+        {
+            printf("Enter month for search: ");
+            scanf("%d", &ymd);
+            if (ymd < 1 || ymd > 12)
+                printf("Wrong number, please try again");
+            else
+                for (int i = 0; i < sizeEmployee; i++)
+                {
+                    if (employees[i].months == ymd)
+                    {
+                        writeArray(array, &i, &counter);
+                        counter++;
+                    }
+                }
+            stop = 1;
+        }
+    }
+    else if (*n == 6)
     {
         printf("Enter number of days of absence due to illness for search: ");
+        scanf("%d", &ymd);
+        for (int i = 0; i < sizeEmployee; i++)
+        {
+            if (employees[i].days == ymd)
+            {
+                writeArray(array, &i, &counter);
+                counter++;
+            }
+        }
+    }
+    else if (*n == 7)
+    {
+        printf("Enter paymention in one day for search: ");
         scanf("%f", &payment);
         for (int i = 0; i < sizeEmployee; i++)
         {
             if (employees[i].paymentinOneDay == payment)
             {
-                printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", i + 1, (employees + i)->surname, (employees + i)->name, (employees + i)->patronymic, (employees + i)->years, (employees + i)->months, (employees + i)->days, (employees + i)->paymentinOneDay);
+                writeArray(array, &i, &counter);
+                counter++;
             }
         }
     }
+    if (counter > 0)
+        outputHospitalEmployees(array, &counter);
+    printf("Number of matches: %d\n", counter);
     system("pause");
 }
 void search()
@@ -668,25 +648,13 @@ void search()
         switch (n)
         {
         case 1:
-            searchBySurname();
-            break;
         case 2:
-            searchByName();
-            break;
         case 3:
-            searchByPatronymic();
-            break;
         case 4:
-            searchByYear();
-            break;
         case 5:
-            searchByMonth();
-            break;
         case 6:
-            searchByDays();
-            break;
         case 7:
-            searchByPayment();
+            searchEngine(&n);
             break;
         case 0:
             stop = 1;
@@ -788,11 +756,12 @@ void sortEngine(int *n, int *n1, struct hospitalEmployee *array)
 }
 void sortBy()
 {
-    int stop = 0, n, n1;
+    int stop = 0, n, n1, stop1 = 0;
     struct hospitalEmployee array[100];
     arrayCopy(array);
     while (stop == 0)
     {
+        stop1 = 0;
         system("cls");
         printf("1 - Sort by surname\n2 - Sort by name\n3 - Sort by patronymic\n4 - Sort by year\n5 - Sort by month\n6 - Sort by number of days of absence due to illness\n7 - Sort by paymention in one day\n0 - Exit\n");
         scanf("%d", &n);
@@ -805,11 +774,18 @@ void sortBy()
         case 5:
         case 6:
         case 7:
-            system("cls");
-            printf("1 - Ascending\n2 - Descending\n");
-            scanf("%d", &n1);
+            while (stop1 == 0)
+            {
+                system("cls");
+                printf("1 - Ascending\n2 - Descending\n");
+                scanf("%d", &n1);
+                if (n1 == 1 || n1 == 2)
+                    stop1 = 1;
+                else
+                    printf("Wrong number, please try again");
+            }
             sortEngine(&n, &n1, array);
-            outputHospitalEmployees(array);
+            outputHospitalEmployees(array, &sizeEmployee);
             system("pause");
             break;
         case 0:
@@ -879,7 +855,7 @@ void employeeList()
             deleteHospitalEmployee();
             break;
         case 4:
-            outputHospitalEmployees(employees);
+            outputHospitalEmployees(employees, &sizeEmployee);
             system("pause");
             break;
         case 5:
@@ -916,7 +892,7 @@ void usercapabilities()
         switch (n)
         {
         case 1:
-            outputHospitalEmployees(employees);
+            outputHospitalEmployees(employees, &sizeEmployee);
             system("pause");
             break;
         case 2:
