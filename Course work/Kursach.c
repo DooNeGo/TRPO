@@ -161,7 +161,7 @@ void save()
     fclose(fileEmployees);
     fclose(fileUsers);
 }
-void outputHospitalEmployees()
+void outputHospitalEmployees(struct hospitalEmployee *array)
 {
     system("cls");
     fflush(stdin);
@@ -169,7 +169,7 @@ void outputHospitalEmployees()
     {
         printf("A list of hospital employees:\n");
         for (int i = 0; i < sizeEmployee; i++)
-            printf("%2d. FIO: %-s %-s %-s  Year: %-4d  Month: %-2d  Number of days of absence due to illness: %-2d  Payment in one day: %-4.3f\n", i + 1, (employees + i)->surname, (employees + i)->name, (employees + i)->patronymic, (employees + i)->years, (employees + i)->months, (employees + i)->days, (employees + i)->paymentinOneDay);
+            printf("%2d. FIO: %-s %-s %-s  Year: %-4d  Month: %-2d  Number of days of absence due to illness: %-2d  Payment in one day: %-4.3f\n", i + 1, (array + i)->surname, (array + i)->name, (array + i)->patronymic, (array + i)->years, (array + i)->months, (array + i)->days, (array + i)->paymentinOneDay);
     }
     else
         printf("There are no hospital employees in the database\n");
@@ -185,7 +185,7 @@ void editHospitalEmployees()
     int n, stop = 0, n1, stop1;
     while (stop == 0)
     {
-        outputHospitalEmployees();
+        outputHospitalEmployees(employees);
         if (sizeEmployee > 0)
         {
             printf("Enter the employee's number(0-Exit): ");
@@ -260,7 +260,7 @@ void deleteHospitalEmployee()
     int stop = 0, n, i;
     while (stop == 0)
     {
-        outputHospitalEmployees();
+        outputHospitalEmployees(employees);
         if (sizeEmployee > 0)
         {
             printf("Enter the employee's number(0-Exit): ");
@@ -692,6 +692,8 @@ void search()
             stop = 1;
             break;
         default:
+            system("cls");
+            fflush(stdin);
             printf("Wrong number, please try again\n");
             system("pause");
             break;
@@ -711,26 +713,113 @@ void arrayCopy(struct hospitalEmployee *array)
         array[i].paymentinOneDay = employees[i].paymentinOneDay;
     }
 }
-int compare()
+void swap(struct hospitalEmployee *array, int *num, int *i)
 {
-    return 0;
+    char temp[20];
+    int temp1;
+    strcpy(temp, (array + *i)->surname);
+    strcpy((array + *i)->surname, (array + *num)->surname);
+    strcpy((array + *num)->surname, temp);
+    strcpy(temp, (array + *i)->name);
+    strcpy((array + *i)->name, (array + *num)->name);
+    strcpy((array + *num)->name, temp);
+    strcpy(temp, (array + *i)->patronymic);
+    strcpy((array + *i)->patronymic, (array + *num)->patronymic);
+    strcpy((array + *num)->patronymic, temp);
+    temp1 = (array + *i)->years;
+    (array + *i)->years = (array + *num)->years;
+    (array + *num)->years = temp1;
+    temp1 = (array + *i)->months;
+    (array + *i)->months = (array + *num)->months;
+    (array + *num)->months = temp1;
+    temp1 = (array + *i)->days;
+    (array + *i)->days = (array + *num)->days;
+    (array + *num)->days = temp1;
+    temp1 = (array + *i)->paymentinOneDay;
+    (array + *i)->paymentinOneDay = (array + *num)->paymentinOneDay;
+    (array + *num)->paymentinOneDay = temp1;
 }
-void sortBySurname()
+void sortEngine(int *n, int *n1, struct hospitalEmployee *array)
 {
-    struct hospitalEmployee array[100];
-    int i;
-    arrayCopy(array);
+    int i, k, num;
+    for (i = 0; i < sizeEmployee - 1; i++)
+    {
+        num = i;
+        for (k = i + 1; k < sizeEmployee; k++)
+        {
+            if (*n1 == 1)
+            {
+                if (*n == 1 && memcmp((array + num)->surname, (array + k)->surname, 1) < 0)
+                    num = k;
+                else if (*n == 2 && memcmp((array + num)->name, (array + k)->name, 1) < 0)
+                    num = k;
+                else if (*n == 3 && memcmp((array + num)->patronymic, (array + k)->patronymic, 1) < 0)
+                    num = k;
+                else if (*n == 4 && (array + num)->years > (array + k)->years)
+                    num = k;
+                else if (*n == 5 && (array + num)->months > (array + k)->months)
+                    num = k;
+                else if (*n == 6 && (array + num)->days > (array + k)->days)
+                    num = k;
+                else if (*n == 7 && (array + num)->paymentinOneDay > (array + k)->paymentinOneDay)
+                    num = k;
+            }
+            else if (*n1 == 2)
+            {
+                if (*n == 1 && memcmp((array + num)->surname, (array + k)->surname, 1) > 0)
+                    num = k;
+                else if (*n == 2 && memcmp((array + num)->name, (array + k)->name, 1) > 0)
+                    num = k;
+                else if (*n == 3 && memcmp((array + num)->patronymic, (array + k)->patronymic, 1) > 0)
+                    num = k;
+                else if (*n == 4 && (array + num)->years < (array + k)->years)
+                    num = k;
+                else if (*n == 5 && (array + num)->months < (array + k)->months)
+                    num = k;
+                else if (*n == 6 && (array + num)->days < (array + k)->days)
+                    num = k;
+                else if (*n == 7 && (array + num)->paymentinOneDay < (array + k)->paymentinOneDay)
+                    num = k;
+            }
+            if (num != i)
+                swap(array, &num, &i);
+        }
+    }
 }
 void sortBy()
 {
-    int stop = 0, n;
+    int stop = 0, n, n1;
+    struct hospitalEmployee array[100];
+    arrayCopy(array);
     while (stop == 0)
     {
         system("cls");
-        printf("1 - Sort by surname\n2 - Sort by name\n");
+        printf("1 - Sort by surname\n2 - Sort by name\n3 - Sort by patronymic\n4 - Sort by year\n5 - Sort by month\n6 - Sort by number of days of absence due to illness\n7 - Sort by paymention in one day\n0 - Exit\n");
+        scanf("%d", &n);
         switch (n)
         {
         case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+            system("cls");
+            printf("1 - Ascending\n2 - Descending\n");
+            scanf("%d", &n1);
+            sortEngine(&n, &n1, array);
+            outputHospitalEmployees(array);
+            system("pause");
+            break;
+        case 0:
+            stop = 1;
+            break;
+        default:
+            system("cls");
+            fflush(stdin);
+            printf("Wrong number, please try again\n");
+            system("pause");
             break;
         }
     }
@@ -776,7 +865,7 @@ void employeeList()
     {
         system("cls");
         fflush(stdin);
-        printf("1 - Add hospital employee\n2 - Edit hospital employee\n3 - Delete hospital employee\n4 - Display hospital employees\n5 - Display a list of payments to hospital employees\n6 - Display the total amount of payments to hospital employees\n7 - Search\n0 - Exit\n");
+        printf("1 - Add hospital employee\n2 - Edit hospital employee\n3 - Delete hospital employee\n4 - Display hospital employees\n5 - Display a list of payments to hospital employees\n6 - Display the total amount of payments to hospital employees\n7 - Search\n8 - Sort by\n0 - Exit\n");
         scanf("%d", &n);
         switch (n)
         {
@@ -790,7 +879,7 @@ void employeeList()
             deleteHospitalEmployee();
             break;
         case 4:
-            outputHospitalEmployees();
+            outputHospitalEmployees(employees);
             system("pause");
             break;
         case 5:
@@ -801,6 +890,9 @@ void employeeList()
             break;
         case 7:
             search();
+            break;
+        case 8:
+            sortBy();
             break;
         case 0:
             stop = 1;
@@ -824,7 +916,7 @@ void usercapabilities()
         switch (n)
         {
         case 1:
-            outputHospitalEmployees();
+            outputHospitalEmployees(employees);
             system("pause");
             break;
         case 2:
