@@ -18,7 +18,7 @@ struct user
     int role;
 } users[50];
 int sizeUsers = 0, sizeEmployee = 0, userNum = 0, role = 0;
-void array_nulling(char *array, int *size)
+void nullingArray(char *array, int *size)
 {
     for (int i = 0; i < *size; i++)
     {
@@ -54,7 +54,7 @@ void logInAgain(int *stopmain)
         }
     }
 }
-void userVerification(char *login, char *password)
+void verification(char *login, char *password)
 {
     for (int i = 0; i < sizeUsers; i++)
     {
@@ -75,13 +75,13 @@ void pass(int *stopmain)
         system("cls");
         fflush(stdin);
         role = 0;
-        array_nulling(login, &maxNumofLetters);
-        array_nulling(password, &maxNumofLetters);
+        nullingArray(login, &maxNumofLetters);
+        nullingArray(password, &maxNumofLetters);
         printf("Login: ");
         scanf("%s", &login);
         printf("Password: ");
         scanf("%s", &password);
-        userVerification(login, password);
+        verification(login, password);
         if (userNum == 0)
         {
             system("cls");
@@ -94,7 +94,7 @@ void pass(int *stopmain)
     if (userNum != -1)
         system("pause");
 }
-void createAdmin()
+void createDefaultAdmin()
 {
     sizeUsers++;
     strcpy(users[0].login, "admin");
@@ -137,7 +137,7 @@ int load()
         fclose(fileUsers);
     }
     else
-        createAdmin();
+        createDefaultAdmin();
     return 0;
 }
 void save()
@@ -160,7 +160,7 @@ void save()
     fclose(fileEmployees);
     fclose(fileUsers);
 }
-void outputHospitalEmployees(struct hospitalEmployee *array, int *sizeEmployee)
+void outputEmployees(struct hospitalEmployee *array, int *sizeEmployee)
 {
     system("cls");
     fflush(stdin);
@@ -179,12 +179,12 @@ void outputSpecificHospitalEmployee(int *numOfEmployee)
     fflush(stdin);
     printf("%d.|FIO: %s %s %s | Year: %d | Month: %d | Number of days of absence due to illness: %d | Payment in one day: %.3f|\n", *numOfEmployee, (employees + *numOfEmployee - 1)->surname, (employees + *numOfEmployee - 1)->name, (employees + *numOfEmployee - 1)->patronymic, (employees + *numOfEmployee - 1)->years, (employees + *numOfEmployee - 1)->months, (employees + *numOfEmployee - 1)->days, (employees + *numOfEmployee - 1)->paymentinOneDay);
 }
-void editHospitalEmployees()
+void editEmployees()
 {
     int n, stop = 0, n1, stop1;
     while (stop == 0)
     {
-        outputHospitalEmployees(employees, &sizeEmployee);
+        outputEmployees(employees, &sizeEmployee);
         if (sizeEmployee > 0)
         {
             printf("Enter the employee's number(0-Exit): ");
@@ -254,12 +254,12 @@ void editHospitalEmployees()
         }
     }
 }
-void deleteHospitalEmployee()
+void deleteEmployee()
 {
     int stop = 0, n, i;
     while (stop == 0)
     {
-        outputHospitalEmployees(employees, &sizeEmployee);
+        outputEmployees(employees, &sizeEmployee);
         if (sizeEmployee > 0)
         {
             printf("Enter the employee's number(0-Exit): ");
@@ -297,7 +297,7 @@ void deleteHospitalEmployee()
         }
     }
 }
-void addNewUser()
+void addUser()
 {
     int i, stop = 0;
     while (stop == 0)
@@ -633,7 +633,7 @@ void searchEngine(int *n)
         }
     }
     if (counter > 0)
-        outputHospitalEmployees(array, &counter);
+        outputEmployees(array, &counter);
     printf("Number of matches: %d\n", counter);
     system("pause");
 }
@@ -668,7 +668,7 @@ void search()
         }
     }
 }
-void arrayCopy(struct hospitalEmployee *array)
+void copyArray(struct hospitalEmployee *array)
 {
     for (int i = 0; i < sizeEmployee; i++)
     {
@@ -758,7 +758,7 @@ void sortBy()
 {
     int stop = 0, n, n1, stop1 = 0;
     struct hospitalEmployee array[100];
-    arrayCopy(array);
+    copyArray(array);
     while (stop == 0)
     {
         stop1 = 0;
@@ -785,7 +785,7 @@ void sortBy()
                     printf("Wrong number, please try again");
             }
             sortEngine(&n, &n1, array);
-            outputHospitalEmployees(array, &sizeEmployee);
+            outputEmployees(array, &sizeEmployee);
             system("pause");
             break;
         case 0:
@@ -812,7 +812,7 @@ void userList()
         switch (n)
         {
         case 1:
-            addNewUser();
+            addUser();
             break;
         case 2:
             editUsers();
@@ -849,13 +849,13 @@ void employeeList()
             addNewHospitalEmployee();
             break;
         case 2:
-            editHospitalEmployees();
+            editEmployees();
             break;
         case 3:
-            deleteHospitalEmployee();
+            deleteEmployee();
             break;
         case 4:
-            outputHospitalEmployees(employees, &sizeEmployee);
+            outputEmployees(employees, &sizeEmployee);
             system("pause");
             break;
         case 5:
@@ -880,7 +880,7 @@ void employeeList()
         }
     }
 }
-void usercapabilities()
+void userMenu()
 {
     int stop = 0, n;
     while (stop == 0)
@@ -892,7 +892,7 @@ void usercapabilities()
         switch (n)
         {
         case 1:
-            outputHospitalEmployees(employees, &sizeEmployee);
+            outputEmployees(employees, &sizeEmployee);
             system("pause");
             break;
         case 2:
@@ -914,7 +914,7 @@ void usercapabilities()
         }
     }
 }
-void admincapabilities()
+void adminMenu()
 {
     int stop = 0, n;
     while (stop == 0)
@@ -953,9 +953,9 @@ int main()
             fflush(stdin);
             pass(&stopmain);
             if (role == 2)
-                usercapabilities();
+                userMenu();
             else if (role == 1)
-                admincapabilities();
+                adminMenu();
             if (userNum == 0)
                 logInAgain(&stopmain);
         }
