@@ -323,8 +323,8 @@ void addUser()
     }
     if (stop == 1)
     {
-            printf("Enter Password: ");
-            scanf("%s", &((users + sizeUsers)->password));
+        printf("Enter Password: ");
+        scanf("%s", &((users + sizeUsers)->password));
         while (stop == 1)
         {
             printf("Enter Role(1-admin or 2-user): ");
@@ -525,117 +525,76 @@ void writeArray(struct hospitalEmployee *array, int *numOfEmployee, int *counter
     (array + *counter)->days = (employees + *numOfEmployee)->days;
     (array + *counter)->paymentinOneDay = (employees + *numOfEmployee)->paymentinOneDay;
 }
-void searchEngine(int *n)
+void searchMatches(struct hospitalEmployee *array, char *FIO, int *numLetters, int *n, int *ymd, float *payment)
 {
-    char FIO[20];
-    struct hospitalEmployee array[100];
-    int ymd, numFind, stop = 0, counter = 0;
-    float payment;
-    system("cls");
-    if (sizeEmployee == 0)
-        printf("There are no hospital employees in the database\n");
-    else if (*n == 1)
+    int counter = 0;
+    for (int i = 0; i < sizeEmployee; i++)
     {
-        printf("Enter surname for search: ");
-        numFind = scanf("%c", &FIO);
-        for (int i = 0; i < sizeEmployee; i++)
+        if ((memcmp(employees[i].surname, FIO, *numLetters) == 0 && *n == 1) || (memcmp(employees[i].name, FIO, *numLetters) == 0 && *n == 2) || (memcmp(employees[i].patronymic, FIO, *numLetters) == 0 && *n == 3) || (employees[i].years == *ymd && *n == 4) || (employees[i].months == *ymd && *n == 5) || (employees[i].days == *ymd && *n == 6) || (employees[i].paymentinOneDay == *payment && *n == 7))
         {
-            if (memcmp(employees[i].surname, FIO, numFind) == 0)
-            {
-                writeArray(array, &i, &counter);
-                counter++;
-            }
-        }
-    }
-    else if (*n == 2)
-    {
-        printf("Enter name for search: ");
-        numFind = scanf("%s", &FIO);
-        for (int i = 0; i < sizeEmployee; i++)
-        {
-            if (memcmp(employees[i].name, FIO, numFind) == 0)
-            {
-                writeArray(array, &i, &counter);
-                counter++;
-            }
-        }
-    }
-    else if (*n == 3)
-    {
-        printf("Enter patronymic for search: ");
-        numFind = scanf("%s", &FIO);
-        for (int i = 0; i < sizeEmployee; i++)
-        {
-            if (memcmp(employees[i].patronymic, FIO, numFind) == 0)
-            {
-                writeArray(array, &i, &counter);
-                counter++;
-            }
-        }
-    }
-    else if (*n == 4)
-    {
-        printf("Enter year for search: ");
-        scanf("%d", &ymd);
-        for (int i = 0; i < sizeEmployee; i++)
-        {
-            if (employees[i].years == ymd)
-            {
-                writeArray(array, &i, &counter);
-                counter++;
-            }
-        }
-    }
-    else if (*n == 5)
-    {
-        while (stop == 0)
-        {
-            printf("Enter month for search: ");
-            scanf("%d", &ymd);
-            if (ymd < 1 || ymd > 12)
-                printf("Wrong number, please try again");
-            else
-                for (int i = 0; i < sizeEmployee; i++)
-                {
-                    if (employees[i].months == ymd)
-                    {
-                        writeArray(array, &i, &counter);
-                        counter++;
-                    }
-                }
-            stop = 1;
-        }
-    }
-    else if (*n == 6)
-    {
-        printf("Enter number of days of absence due to illness for search: ");
-        scanf("%d", &ymd);
-        for (int i = 0; i < sizeEmployee; i++)
-        {
-            if (employees[i].days == ymd)
-            {
-                writeArray(array, &i, &counter);
-                counter++;
-            }
-        }
-    }
-    else if (*n == 7)
-    {
-        printf("Enter paymention in one day for search: ");
-        scanf("%f", &payment);
-        for (int i = 0; i < sizeEmployee; i++)
-        {
-            if (employees[i].paymentinOneDay == payment)
-            {
-                writeArray(array, &i, &counter);
-                counter++;
-            }
+            writeArray(array, &i, &counter);
+            counter++;
         }
     }
     if (counter > 0)
         outputEmployees(array, &counter);
     printf("Number of matches: %d\n", counter);
     system("pause");
+}
+void searchEngine(int *n)
+{
+    char FIO[20];
+    struct hospitalEmployee array[100];
+    int ymd, numLetters, stop = 0, flag = 0;
+    float payment;
+    system("cls");
+    if (sizeEmployee == 0)
+        printf("There are no hospital employees in the database\n");
+    else
+    {
+        while (stop == 0)
+        {
+            system("cls");
+            if (*n == 1)
+                printf("Enter surname for search(0 - Return): ");
+            else if (*n == 2)
+                printf("Enter name for search(0 - Return): ");
+            else if (*n == 3)
+                printf("Enter patronymic for search(0 - Return): ");
+            else if (*n == 4)
+                printf("Enter year for search(0 - Return): ");
+            else if (*n == 5)
+                printf("Enter month for search(0 - Return): ");
+            else if (*n == 6)
+                printf("Enter number of days of absence due to illness for search(0 - Return): ");
+            else if (*n == 7)
+                printf("Enter paymention in one day for search(0 - Return): ");
+            if (*n > 0 && *n < 4)
+            {
+                scanf("%s", &FIO);
+                numLetters = strlen(FIO);
+            }
+            else if (*n > 3 && *n < 7)
+                scanf("%d", &ymd);
+            else if (*n == 7)
+                scanf("%f", &payment);
+            fflush(stdin);
+            if ((*n > 0 && *n < 4 && FIO[0] == '0') || (*n > 3 && *n < 8 && ymd == 0))
+            {
+                flag = 1;
+                return;
+            }
+            if (*n == 5 && (ymd < 1 || ymd > 12) || (*n == 6 && (ymd < 1 || ymd > 31)))
+            {
+                printf("Wrong number, please try again\n");
+                system("pause");
+            }
+            else
+                stop = 1;
+        }
+        if (flag == 0)
+            searchMatches(array, FIO, &numLetters, n, &ymd, &payment);
+    }
 }
 void search()
 {
