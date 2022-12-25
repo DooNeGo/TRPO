@@ -301,7 +301,7 @@ void editEmployeesMenu()
                 outputSpecificHospitalEmployee(&n);
                 printf("1 - Edit surname\n2 - Edit name\n3 - Edit patronymic\n4 - Edit number of year\n");
                 printf("5 - Edit number of month\n6 - Edit number of days of absence due to illness\n7 - Edit payment in one day\n0 - Return\n");
-                n1=100;
+                n1 = 100;
                 scanf("%d", &n1);
                 if (n1 == 1)
                     editSurname(&n);
@@ -466,7 +466,7 @@ int chooseUser(int *stopMenu)
         if (sizeUsers > 0)
         {
             printf("Enter the users's number(0 - Return): ");
-            n=101;
+            n = 101;
             scanf("%d", &n);
             if ((n < 0) || (n > sizeUsers))
             {
@@ -715,27 +715,18 @@ void searchEngine(int *n)
 }
 void search()
 {
-    int stop = 0, n, i;
-    while (stop == 0)
+    int n;
+    while (1)
     {
         system("cls");
-        printf("1 - Search by surname\n2 - Search by name\n3 - Search by patronymic\n4 - Search by year\n5 - Search by month\n6 - Search by number of days of absence due to illness\n7 - Search by payment in one day\n0 - Exit\n");
+        printf("1 - Search by surname\n2 - Search by name\n3 - Search by patronymic\n4 - Search by year\n5 - Search by month\n6 - Search by number of days of absence due to illness\n7 - Search by payment in one day\n0 - Return\n");
         scanf("%d", &n);
-        switch (n)
-        {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-        case 7:
+        if (n > 0 && n < 8)
             searchEngine(&n);
-            break;
-        case 0:
-            stop = 1;
-            break;
-        default:
+        else if (n == 0)
+            return;
+        else
+        {
             system("cls");
             fflush(stdin);
             printf("Wrong number, please try again\n");
@@ -880,8 +871,8 @@ void sortBy()
 }
 void userList()
 {
-    int stop = 0, n;
-    while (stop == 0)
+    int n;
+    while (1)
     {
         system("cls");
         fflush(stdin);
@@ -899,9 +890,11 @@ void userList()
             system("pause");
         }
         else if (n == 0)
-            stop = 1;
+            return;
         else
         {
+            system("cls");
+            fflush(stdin);
             printf("Wrong number, please try again\n");
             system("pause");
         }
@@ -909,109 +902,106 @@ void userList()
 }
 void employeeList()
 {
-    int stop = 0, n;
-    while (stop == 0)
+    int n;
+    while (1)
     {
         system("cls");
         fflush(stdin);
         printf("1 - Add hospital employee\n2 - Edit hospital employee\n3 - Delete hospital employee\n4 - Display hospital employees\n5 - Display a list of payments to hospital employees\n6 - Display the total amount of payments to hospital employees\n7 - Search\n8 - Sort by\n0 - Return\n");
+        n=20;
         scanf("%d", &n);
-        switch (n)
-        {
-        case 1:
+        if (n == 1)
             addEmployee();
-            break;
-        case 2:
+        else if (n == 2)
             editEmployeesMenu();
-            break;
-        case 3:
+        else if (n == 3)
             deleteEmployee();
-            break;
-        case 4:
+        else if (n == 4)
+        {
             outputEmployees(employees, &sizeEmployee);
             system("pause");
-            break;
-        case 5:
+        }
+        else if (n == 5)
             outputAlistOfPayments();
-            break;
-        case 6:
+        else if (n == 6)
             outputTotalAmountofPayments();
-            break;
-        case 7:
+        else if (n == 7)
             search();
-            break;
-        case 8:
+        else if (n == 8)
             sortBy();
-            break;
-        case 0:
-            stop = 1;
-            break;
-        default:
+        else if (n == 0)
+            return;
+        else
+        {
+            system("cls");
+            fflush(stdin);
             printf("Wrong number, please try again\n");
             system("pause");
-            break;
         }
     }
 }
 void userMenu()
 {
-    int stop = 0, n;
-    while (stop == 0)
+    int n;
+    while (1)
     {
         system("cls");
         fflush(stdin);
-        printf("1 - Display hospital employees\n2 - Display a list of payments to hospital employees\n3 - Display the total amount of payments to hospital employees\n4 - Search\n0 - Log out\n");
+        printf("1 - Display hospital employees\n2 - Display a list of payments to hospital employees\n3 - Display the total amount of payments to hospital employees\n4 - Search\n5 - Sort by\n0 - Log out\n");
+        n = 10;
         scanf("%d", &n);
-        switch (n)
+        if (n == 1)
         {
-        case 1:
             outputEmployees(employees, &sizeEmployee);
             system("pause");
-            break;
-        case 2:
+        }
+        else if (n == 2)
             outputAlistOfPayments();
-            break;
-        case 3:
+        else if (n == 3)
             outputTotalAmountofPayments();
-            break;
-        case 4:
+        else if (n == 4)
             search();
-            break;
-        case 0:
-            stop = 1;
+        else if (n == 5)
+            sortBy();
+        else if (n == 0)
+        {
             userNum = 0;
-            break;
-        default:
+            return;
+        }
+        else
+        {
+            system("cls");
+            fflush(stdin);
             printf("Wrong number, please try again\n");
-            break;
+            system("pause");
         }
     }
 }
 void adminMenu()
 {
     int stop = 0, n;
-    while (stop == 0)
+    while (1)
     {
         system("cls");
         fflush(stdin);
         printf("1 - Users\n2 - Hospital employees\n0 - Log out\n");
+        n = 10;
         scanf("%d", &n);
-        switch (n)
-        {
-        case 1:
+        if (n == 1)
             userList();
-            break;
-        case 2:
+        else if (n == 2)
             employeeList();
-            break;
-        case 0:
-            stop = 1;
+        else if (n == 0)
+        {
             userNum = 0;
-            break;
-        default:
+            return;
+        }
+        else
+        {
+            system("cls");
+            fflush(stdin);
             printf("Wrong number, please try again\n");
             system("pause");
-            break;
         }
     }
 }
