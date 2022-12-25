@@ -290,6 +290,7 @@ void editEmployeesMenu()
     int stop = 0, n1, n, stop1 = 0;
     while (stop == 0)
     {
+        stop1 = 0;
         n = chooseEmployee(&stop);
         if (n != 0)
         {
@@ -830,9 +831,9 @@ void sortEngine(int *n, int *n1, struct hospitalEmployee *array)
                 else if (*n == 7 && (array + num)->paymentinOneDay < (array + k)->paymentinOneDay)
                     num = k;
             }
-            if (num != i)
-                swap(array, &num, &i);
         }
+        if (num != i)
+            swap(array, &num, &i);
     }
 }
 void sortBy()
@@ -844,7 +845,7 @@ void sortBy()
     {
         system("cls");
         fflush(stdin);
-        printf("1 - Sort by surname\n2 - Sort by name\n3 - Sort by patronymic\n4 - Sort by year\n5 - Sort by month\n6 - Sort by number of days of absence due to illness\n7 - Sort by paymention in one day\n0 - Return\n");
+        printf("1 - Sort by surname\n2 - Sort by name\n3 - Sort by patronymic\n4 - Sort by year\n5 - Sort by month\n6 - Sort by number of days of absence due to illness\n7 - Sort by payment in one day\n0 - Return\n");
         scanf("%d", &n);
         if (n > 0 && n < 8)
         {
