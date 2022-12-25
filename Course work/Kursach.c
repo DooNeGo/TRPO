@@ -21,33 +21,33 @@ int sizeUsers = 0, sizeEmployee = 0, userNum = 0, role = 0;
 void nullingArray(char *array, int size)
 {
     for (int i = 0; i < size; i++)
-    {
         *(array + i) = '\000';
-    }
 }
 void logInAgain(int *stopmain)
 {
-    int n, stop = 0;
-    while (stop == 0)
+    int n;
+    while (1)
     {
         system("cls");
         fflush(stdin);
         printf("1 - Log in again\n0 - Close program\n");
+        n = 5;
         scanf("%d", &n);
         if (n == 1)
         {
             userNum = 0;
-            stop = 1;
+            return;
         }
-        if (n == 0)
+        else if (n == 0)
         {
             userNum = -1;
-            stop = 1;
             *stopmain = 1;
+            return;
         }
-        if (n > 1 || n < 0)
+        else
         {
             system("cls");
+            fflush(stdin);
             printf("Wrong number, please try again\n");
             system("pause");
         }
@@ -119,16 +119,13 @@ int load()
             system("pause");
             return 1;
         }
-        else
+        if (sizeUsers > 0)
         {
-            if (sizeUsers > 0)
-            {
-                for (int i = 0; i < sizeUsers; i++)
-                    fscanf(fileUsers, "%s %s %d\n", &users[i].login, &users[i].password, &users[i].role);
-            }
-            if (sizeEmployee > 0)
-                fread(employees, sizeof(struct hospitalEmployee), sizeEmployee, fileEmployees);
+            for (int i = 0; i < sizeUsers; i++)
+                fscanf(fileUsers, "%s %s %d\n", &users[i].login, &users[i].password, &users[i].role);
         }
+        if (sizeEmployee > 0)
+            fread(employees, sizeof(struct hospitalEmployee), sizeEmployee, fileEmployees);
         fclose(fileEmployees);
         fclose(fileUsers);
     }
@@ -908,7 +905,7 @@ void employeeList()
         system("cls");
         fflush(stdin);
         printf("1 - Add hospital employee\n2 - Edit hospital employee\n3 - Delete hospital employee\n4 - Display hospital employees\n5 - Display a list of payments to hospital employees\n6 - Display the total amount of payments to hospital employees\n7 - Search\n8 - Sort by\n0 - Return\n");
-        n=20;
+        n = 20;
         scanf("%d", &n);
         if (n == 1)
             addEmployee();
