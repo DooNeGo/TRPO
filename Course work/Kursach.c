@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 struct hospitalEmployee
 {
     char surname[20];
@@ -596,41 +597,65 @@ void deleteUser()
         }
     }
 }
+int enterYearMonth(int *year, int *month)
+{
+    system("cls");
+    printf("Enter year(Example - 2022 | 0 - Return): ");
+    scanf("%d", year);
+    if (*year == 0)
+        return 0;
+    while (1)
+    {
+        system("cls");
+        printf("Enter month(Example - 7 | 0 - Return): ");
+        scanf("%d", month);
+        if (*month == 0)
+            return 0;
+        else if (*month < 1 || *month > 12)
+        {
+            system("cls");
+            fflush(stdin);
+            printf("Wrong number, please try again\n");
+            system("pause");
+        }
+        else
+            return 1;
+    }
+}
 void outputAlistOfPayments()
 {
-    int year, month, i, monthPayment;
-    system("cls");
-    printf("Enter year(Example - 2022): ");
-    scanf("%d", &year);
-    printf("Enter month(Exmple - 7): ");
-    scanf("%d", &month);
-    for (i = 0; i < sizeEmployee; i++)
+    int year, month, i, monthPayment, counter = 0;
+    if (enterYearMonth(&year, &month) == 1)
     {
-        if ((employees + i)->year == year && (employees + i)->month == month)
+        for (i = 0; i < sizeEmployee; i++)
         {
-            monthPayment = (30 - (employees + i)->days) * (employees + i)->paymentinOneDay;
-            printf("%d. FIO: %s %s %s  Payment: %d\n", i + 1, employees[i].surname, employees[i].name, employees[i].patronymic, monthPayment);
+            if ((employees + i)->year == year && (employees + i)->month == month)
+            {
+                monthPayment = (30 - (employees + i)->days) * (employees + i)->paymentinOneDay;
+                counter++;
+                printf("%d. FIO: %s %s %s  Payment: %d\n", i + 1, employees[i].surname, employees[i].name, employees[i].patronymic, monthPayment);
+            }
         }
+        if (counter == 0)
+            printf("There is no information for this request\n");
+        system("pause");
     }
-    system("pause");
 }
 void outputTotalAmountofPayments()
 {
     int year, month, i, totalMonthPayment = 0;
-    system("cls");
-    printf("Enter year(Example - 2022): ");
-    scanf("%d", &year);
-    printf("Enter month(Exmple - 7): ");
-    scanf("%d", &month);
-    for (i = 0; i < sizeEmployee; i++)
+    if (enterYearMonth(&year, &month) == 1)
     {
-        if ((employees + i)->year == year && (employees + i)->month == month)
+        for (i = 0; i < sizeEmployee; i++)
         {
-            totalMonthPayment = totalMonthPayment + (30 - (employees + i)->days) * (employees + i)->paymentinOneDay;
+            if ((employees + i)->year == year && (employees + i)->month == month)
+            {
+                totalMonthPayment = totalMonthPayment + (30 - (employees + i)->days) * (employees + i)->paymentinOneDay;
+            }
         }
+        printf("Total month payment: %d\n", totalMonthPayment);
+        system("pause");
     }
-    printf("Total payment: %d\n", totalMonthPayment);
-    system("pause");
 }
 void writeArray(struct hospitalEmployee *array, int *numOfEmployee, int *counter)
 {
