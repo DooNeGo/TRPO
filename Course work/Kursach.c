@@ -24,6 +24,13 @@ void nullingArray(char *array, int size)
     for (int i = 0; i < size; i++)
         *(array + i) = '\000';
 }
+void outputMessage(const char *msg)
+{
+    system("cls");
+    fflush(stdin);
+    printf("%s\n", msg);
+    system("pause");
+}
 void logInAgain(int *stopmain)
 {
     int n;
@@ -46,12 +53,7 @@ void logInAgain(int *stopmain)
             return;
         }
         else
-        {
-            system("cls");
-            fflush(stdin);
-            printf("Wrong number, please try again\n");
-            system("pause");
-        }
+        outputMessage("Wrong number, please try again");
     }
 }
 void verification(char *login, char *password)
@@ -82,9 +84,7 @@ void pass(int *stopmain)
         verification(login, password);
         if (userNum == 0)
         {
-            system("cls");
-            printf("Wrong login or password\n");
-            system("pause");
+            outputMessage("Wrong number, please try again");
             logInAgain(stopmain);
         }
     }
@@ -161,7 +161,7 @@ void outputEmployees(struct hospitalEmployee *array, int *sizeEmployee)
             printf("%2d. FIO: %-s %-s %-s  Year: %-4d  Month: %-2d  Number of days of absence due to illness: %-2d  Payment in one day: %-4.3f\n", i + 1, (array + i)->surname, (array + i)->name, (array + i)->patronymic, (array + i)->year, (array + i)->month, (array + i)->days, (array + i)->paymentinOneDay);
     }
     else
-        printf("There are no hospital employees in the database\n");
+        outputMessage("There are no hospital employees in the database");
 }
 void outputSpecificHospitalEmployee(int *numOfEmployee)
 {
@@ -179,11 +179,7 @@ int chooseEmployee(int *stopMenu)
             printf("Enter the employee's number(0 - Return): ");
             scanf("%d", &n);
             if ((n < 0) || (n > sizeEmployee))
-            {
-                system("cls");
-                printf("Wrong number, please try again\n");
-                system("pause");
-            }
+            outputMessage("Wrong number, please try again");
             else if (n == 0)
             {
                 *stopMenu = 1;
@@ -209,8 +205,7 @@ void editSurname(int *n)
     if (surname[0] == '0')
         return;
     strcpy(employees[*n - 1].surname, surname);
-    printf("Surname has been changed\n");
-    system("pause");
+    outputMessage("Surname has been changed");
 }
 void editName(int *n)
 {
@@ -222,8 +217,7 @@ void editName(int *n)
     if (name[0] == '0')
         return;
     strcpy(employees[*n - 1].name, name);
-    printf("Name has been changed\n");
-    system("pause");
+    outputMessage("Name has been changed");
 }
 void editPatronymic(int *n)
 {
@@ -235,8 +229,7 @@ void editPatronymic(int *n)
     if (patronymic[0] == '0')
         return;
     strcpy(employees[*n - 1].patronymic, patronymic);
-    printf("Patronymic has been changed\n");
-    system("pause");
+    outputMessage("Patronymic has been changed");
 }
 void editYear(int *n)
 {
@@ -247,8 +240,7 @@ void editYear(int *n)
     if (year == 0)
         return;
     employees[*n - 1].year = year;
-    printf("Year has been changed\n");
-    system("pause");
+    outputMessage("Year has been changed");
 }
 void editMonth(int *n)
 {
@@ -259,8 +251,7 @@ void editMonth(int *n)
     if (month == 0)
         return;
     employees[*n - 1].month = month;
-    printf("Month has been changed\n");
-    system("pause");
+    outputMessage("Month has been changed");
 }
 void editDays(int *n)
 {
@@ -271,8 +262,7 @@ void editDays(int *n)
     if (days == -1)
         return;
     employees[*n - 1].days = days;
-    printf("Number of days of absence due to illness has been changed\n");
-    system("pause");
+    outputMessage("Number of days of absence due to illness has been changed");
 }
 void editPayment(int *n)
 {
@@ -283,8 +273,7 @@ void editPayment(int *n)
     if (payment == 0)
         return;
     employees[*n - 1].paymentinOneDay = payment;
-    printf("Payment in one day has been changed\n");
-    system("pause");
+    outputMessage("Payment in one day has been changed");
 }
 void editEmployeesMenu()
 {
@@ -319,12 +308,7 @@ void editEmployeesMenu()
                 else if (n1 == 0)
                     stop1 = 1;
                 else
-                {
-                    system("cls");
-                    fflush(stdin);
-                    printf("Wrong number, please try again\n");
-                    system("pause");
-                }
+                    outputMessage("Wrong number, please try again");
             }
         }
     }
@@ -348,8 +332,7 @@ void deleteEmployee()
                 (employees + i)->paymentinOneDay = (employees + i + 1)->paymentinOneDay;
             }
             sizeEmployee--;
-            printf("Delete hospital employee successfully\n");
-            system("pause");
+            outputMessage("Delete hospital employee successfully");
         }
         else
             stop = 1;
@@ -361,8 +344,7 @@ int checkRepetition()
     {
         if (strcmp(users[sizeUsers].login, users[i].login) == 0)
         {
-            printf("This login already exists\n");
-            system("pause");
+            outputMessage("This login already exists");
             return 0;
         }
     }
@@ -392,20 +374,14 @@ void addUser()
         scanf("%d", &users[sizeUsers].role);
         if (users[sizeUsers].role == 1 || users[sizeUsers].role == 2)
         {
-            printf("New user was added\n");
+            outputMessage("New user was added");
             sizeUsers++;
-            system("pause");
             return;
         }
         else if (users[sizeUsers].role == 0)
             return;
         else
-        {
-            system("pause");
-            fflush(stdin);
-            printf("Wrong number of role, please try again\n");
-            system("pause");
-        }
+            outputMessage("Wrong number, please try again");
     }
 }
 void outputUsers()
@@ -468,12 +444,7 @@ int chooseUser(int *stopMenu)
             n = 101;
             scanf("%d", &n);
             if ((n < 0) || (n > sizeUsers))
-            {
-                system("cls");
-                fflush(stdin);
-                printf("Wrong number, please try again\n");
-                system("pause");
-            }
+                outputMessage("Wrong number, please try again");
             else if (n == 0)
             {
                 *stopMenu = 1;
@@ -499,8 +470,7 @@ void editLogin(int *n)
     if (login[0] == '0')
         return;
     strcpy(users[*n - 1].login, login);
-    printf("Login has been changed\n");
-    system("pause");
+    outputMessage("Login has been changed");
 }
 void editPassword(int *n)
 {
@@ -512,8 +482,7 @@ void editPassword(int *n)
     if (password[0] == '0')
         return;
     strcpy(users[*n - 1].password, password);
-    printf("Password has been changed\n");
-    system("pause");
+    outputMessage("Password has been changed\n");
 }
 void editRole(int *n)
 {
@@ -529,15 +498,11 @@ void editRole(int *n)
         else if (role == 1 || role == 2)
         {
             users[*n - 1].role = role;
-            printf("Role has been changed\n");
-            system("pause");
+            outputMessage("Role has been changed");
             return;
         }
         else
-        {
-            printf("Wrong number, please try again\n");
-            system("pause");
-        }
+            outputMessage("Wrong number, please try again");
     }
 }
 void editUsers()
@@ -562,10 +527,7 @@ void editUsers()
                 else if (n1 == 0)
                     return;
                 else
-                {
-                    printf("Wrong number, please try again\n");
-                    system("pause");
-                }
+                    outputMessage("Wrong number, please try again");
             }
         }
     }
@@ -587,14 +549,11 @@ void deleteUser()
             sizeUsers--;
             if (userNum > n)
                 userNum--;
-            printf("Delete user successfully\n");
+            outputMessage("Delete user successfully");
             system("pause");
         }
         else if (n == userNum)
-        {
-            printf("You can't delete an active user!!!\n");
-            system("pause");
-        }
+            outputMessage("You can't delete an active user!!!");
     }
 }
 int enterYearMonth(int *year, int *month)
@@ -612,12 +571,7 @@ int enterYearMonth(int *year, int *month)
         if (*month == 0)
             return 0;
         else if (*month < 1 || *month > 12)
-        {
-            system("cls");
-            fflush(stdin);
-            printf("Wrong number, please try again\n");
-            system("pause");
-        }
+            outputMessage("Wrong number, please try again");
         else
             return 1;
     }
@@ -637,8 +591,9 @@ void outputAlistOfPayments()
             }
         }
         if (counter == 0)
-            printf("There is no information for this request\n");
-        system("pause");
+            outputMessage("There is no information for this request");
+        else
+            system("pause");
     }
 }
 void outputTotalAmountofPayments()
@@ -690,9 +645,8 @@ void searchEngine(int *n)
     struct hospitalEmployee array[100];
     int ymd, stop = 0, flag = 0;
     float payment;
-    system("cls");
     if (sizeEmployee == 0)
-        printf("There are no hospital employees in the database\n");
+        outputMessage("There are no hospital employees in the database\n");
     else
     {
         while (stop == 0)
@@ -725,10 +679,7 @@ void searchEngine(int *n)
                 return;
             }
             else if (*n == 5 && (ymd < 1 || ymd > 12) || (*n == 6 && (ymd < 1 || ymd > 31)))
-            {
-                printf("Wrong number, please try again\n");
-                system("pause");
-            }
+                outputMessage("Wrong number, please try again");
             else
                 stop = 1;
         }
@@ -749,13 +700,7 @@ void search()
         else if (n == 0)
             return;
         else
-        {
-            system("cls");
-            fflush(stdin);
-            printf("Wrong number, please try again\n");
-            system("pause");
-            break;
-        }
+            outputMessage("Wrong number, please try again");
     }
 }
 void copyArray(struct hospitalEmployee *array)
@@ -808,10 +753,7 @@ void sortAscendingDescending(int *n)
         if (*n == 1 || *n == 2 || *n == 0)
             return;
         else
-        {
-            printf("Wrong number, please try again");
-            system("pause");
-        }
+            outputMessage("Wrong number, please try again");
     }
 }
 void sortEngine(int *n, int *n1, struct hospitalEmployee *array)
@@ -885,11 +827,7 @@ void sortBy()
         else if (n == 0)
             return;
         else
-        {
-            system("cls");
-            printf("Wrong number, please try again\n");
-            system("pause");
-        }
+            outputMessage("Wrong number, please try again");
     }
 }
 void userList()
@@ -915,12 +853,7 @@ void userList()
         else if (n == 0)
             return;
         else
-        {
-            system("cls");
-            fflush(stdin);
-            printf("Wrong number, please try again\n");
-            system("pause");
-        }
+            outputMessage("Wrong number, please try again");
     }
 }
 void employeeList()
@@ -955,12 +888,7 @@ void employeeList()
         else if (n == 0)
             return;
         else
-        {
-            system("cls");
-            fflush(stdin);
-            printf("Wrong number, please try again\n");
-            system("pause");
-        }
+            outputMessage("Wrong number, please try again");
     }
 }
 void userMenu()
@@ -992,12 +920,7 @@ void userMenu()
             return;
         }
         else
-        {
-            system("cls");
-            fflush(stdin);
-            printf("Wrong number, please try again\n");
-            system("pause");
-        }
+            outputMessage("Wrong number, please try again");
     }
 }
 void adminMenu()
@@ -1020,12 +943,7 @@ void adminMenu()
             return;
         }
         else
-        {
-            system("cls");
-            fflush(stdin);
-            printf("Wrong number, please try again\n");
-            system("pause");
-        }
+            outputMessage("Wrong number, please try again");
     }
 }
 int main()
