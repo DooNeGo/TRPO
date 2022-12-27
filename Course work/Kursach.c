@@ -84,7 +84,7 @@ void pass(int *stopmain)
         verification(login, password);
         if (userNum == 0)
         {
-            outputMessage("Wrong number, please try again");
+            outputMessage("Wrong login or password");
             logInAgain(stopmain);
         }
     }
@@ -550,7 +550,6 @@ void deleteUser()
             if (userNum > n)
                 userNum--;
             outputMessage("Delete user successfully");
-            system("pause");
         }
         else if (n == userNum)
             outputMessage("You can't delete an active user!!!");
